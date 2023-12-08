@@ -33,6 +33,7 @@ use App\Http\Controllers\ManagerController;
 
 Route::get('/manager', [ManagerController::class, 'index'])->name('manager.index');
 Route::post('/manager/upload-link', [ManagerController::class, 'uploadYoutubeLink'])->name('manager.upload.link');
+Route::post('/manager/upload-teacher-info', [ManagerController::class, 'uploadTeacherInfo'])->name('manager.uploadTeacherInfo');
 
 
 /*students*/

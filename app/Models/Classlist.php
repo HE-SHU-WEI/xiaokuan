@@ -8,5 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Classlist extends Model
 {
     protected $table = 'classlist';
-    protected $fillable = ['link'];
+    protected $fillable = [
+        'teacherid',
+        'teachername',
+        'link',
+        'videotime',
+        'introduction',
+        'know',
+        'forwho',
+        'photo',
+        'money',
+        'classtype',
+    ];
+
 }

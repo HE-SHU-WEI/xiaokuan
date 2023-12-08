@@ -1,25 +1,43 @@
 <!-- resources/views/manager/index.blade.php -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Page</title>
-</head>
-<body>
-    <h1>Manager Page</h1>
+@extends('layouts.app')
 
-    <form action="{{ route('manager.upload.link') }}" method="post">
-        @csrf
-        <label for="youtube_link">YouTube Link:</label>
-        <input type="text" name="youtube_link" required>
-        <button type="submit">Upload Link</button>
-    </form>
+@section('content')
+    <h2>Manager Page</h2>
 
-    <!-- Display success message if any -->
     @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
-</body>
-</html>
+
+    <form action="{{ route('manager.uploadTeacherInfo') }}" method="post" enctype="multipart/form-data">
+        @csrf
+
+        <label for="teacher_name">Teacher Name:</label>
+        <input type="text" name="teacher_name" required>
+
+        <label for="youtube_link">YouTube Link:</label>
+        <input type="url" name="youtube_link" required>
+
+        <label for="introduction">Introduction:</label>
+        <textarea name="introduction" required></textarea>
+
+        <label for="know">Know:</label>
+        <textarea name="know" required></textarea>
+
+        <label for="for_who">For Who:</label>
+        <textarea name="for_who" required></textarea>
+
+        <label for="photo">Photo:</label>
+        <input type="file" name="photo" accept="image/*" required>
+
+        <label for="money">Money:</label>
+        <input type="number" name="money" required>
+
+        <label for="type">課程種類：</label>
+        <input type="text" name="type" id="type" required>
+
+        <button type="submit">Upload Teacher Info</button>
+    </form>
+@endsection
