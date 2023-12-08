@@ -8,8 +8,9 @@ use App\Models\Userlist;
 use Illuminate\Support\Facades\Storage;
 use Google_Client;
 use Google_Service_YouTube;
-use Google\Service\YouTube as GoogleYouTube;
+use Google\Service\YouTube;
 use Illuminate\Support\Facades\Log;
+
 
 
 
@@ -47,6 +48,8 @@ class ManagerController extends Controller
             'money' => 'required|numeric',
         ]);
 
+        // dd($request->all());
+
         // 取得老師名字
         $teacherName = $request->input('teacher_name');
 
@@ -83,7 +86,7 @@ class ManagerController extends Controller
         return response()->json([
             'message' => 'Teacher information uploaded successfully',
             'videotime' => $newClass->videotime,
-            'youtube_id' => $this->getYouTubeVideoId($youtubeId),
+            'youtube_id' => $youtubeId,
         ], 200);
 
     } catch (\Exception $e) {
@@ -94,36 +97,33 @@ class ManagerController extends Controller
 }
 
 
-    private function getYouTubeVideoLength($youtubeId)
-    {
-        try {
-            // 初始化 Google API 客戶端
-            $googleClient = new Google_Client();
-            $googleClient->setDeveloperKey(env('YOUTUBE_API_KEY')); // 設定您的 Google API 金鑰
+private function getYouTubeVideoLength($youtubeId)
+{
+    try {
+        // 初始化 Google API 客戶端
+        $googleClient = new Google_Client();
+        $googleClient->setDeveloperKey(env('YOUTUBE_API_KEY')); // 設定您的 Google API 金鑰
 
-            // 初始化 YouTube 服務
-            $youtube = new GoogleYouTube($googleClient);
+        // 初始化 YouTube 服務
+        $youtube = new YouTube($googleClient);
 
-            // 使用 YouTube Data API 獲取影片詳細資訊
-            $videoInfo = $youtube->videos->listVideos('contentDetails', ['id' => $youtubeId]);
+        // 使用 YouTube Data API 獲取影片詳細資訊
+        $videoInfo = $youtube->videos->listVideos('contentDetails', ['id' => $youtubeId]);
 
-            if (empty($videoInfo) || empty($videoInfo[0]->contentDetails->duration)) {
-                throw new \Exception('Unable to get video information from YouTube API.');
-            }
-
-            // 提取影片的持續時間（持續時間以 PT 格式返回）
-            $duration = $videoInfo[0]->contentDetails->duration;
-
-            // 轉換 PT 格式成 H:i:s
-            $videoLength = $this->convertYouTubeDurationToHMS($duration);
-
-            return $videoLength;
-        } catch (\Exception $e) {
-            // 處理錯誤，例如日誌記錄或返回預設值
-            Log::error('Error in getYouTubeVideoLength: ' . $e->getMessage());
-            return '00:00:00'; // 或者返回其他預設值
+        if (empty($videoInfo) || empty($videoInfo[0]->contentDetails->duration)) {
+            throw new \Exception('Unable to get video information from YouTube API.');
         }
+
+        // 提取影片的持續時間（持續時間以 PT 格式返回）
+        $duration = $videoInfo[0]->contentDetails->duration;
+
+        return $duration; // 直接返回 YouTube API 返回的 PT 格式的時間
+    } catch (\Exception $e) {
+        // 處理錯誤，例如日誌記錄或返回預設值
+        Log::error('Error in getYouTubeVideoLength: ' . $e->getMessage());
+        return 'PT0S'; // 或者返回其他預設值
     }
+}
 
     private function convertYouTubeDurationToHMS($duration)
     {
