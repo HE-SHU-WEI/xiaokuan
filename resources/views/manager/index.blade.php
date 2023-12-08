@@ -20,6 +20,9 @@
         <label for="youtube_link">YouTube Link:</label>
         <input type="url" name="youtube_link" required>
 
+        <label for="youtube_id">YouTube Video ID:</label>
+        <input type="text" name="youtube_id" required>
+
         <label for="introduction">Introduction:</label>
         <textarea name="introduction" required></textarea>
 
