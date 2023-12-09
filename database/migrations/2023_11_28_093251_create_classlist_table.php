@@ -20,11 +20,11 @@ class CreateClasslistTable extends Migration
             $table->string('know');
             $table->string('forwho');
             $table->string('money');
+            $table->string('classname'); // 新增 classname 欄位
             $table->timestamps();
 
             $table->foreign('teacherid')->references('id')->on('userlist')->onDelete('cascade');
         });
-
     }
 
     public function down()

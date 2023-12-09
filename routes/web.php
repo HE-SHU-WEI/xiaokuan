@@ -18,6 +18,15 @@ Route::get('/', function () {
 });
 
 
+/*main*/
+
+use App\Http\Controllers\MainController;
+
+Route::get('/main', [MainController::class, 'index'])->name('main.index');
+
+
+
+
 /* teacher*/
 
 use App\Http\Controllers\TeacherController;
@@ -48,5 +57,12 @@ use App\Http\Controllers\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+
+/*class */
+
+use App\Http\Controllers\ClassController;
+
+Route::get('/class', [ClassController::class, 'index'])->name('class.index');
 
 

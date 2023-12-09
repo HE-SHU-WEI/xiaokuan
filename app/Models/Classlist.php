@@ -11,6 +11,7 @@ class Classlist extends Model
     protected $fillable = [
         'teacherid',
         'teachername',
+        'classname',
         'link',
         'videotime',
         'introduction',

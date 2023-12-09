@@ -17,6 +17,9 @@
         <label for="teacher_name">Teacher Name:</label>
         <input type="text" name="teacher_name" required>
 
+        <label for="classname">Class Name:</label>
+        <input type="text" name="classname" required>
+
         <label for="youtube_link">YouTube Link:</label>
         <input type="url" name="youtube_link" required>
 
@@ -38,8 +41,8 @@
         <label for="money">Money:</label>
         <input type="number" name="money" required>
 
-        <label for="type">課程種類：</label>
-        <input type="text" name="type" id="type" required>
+        <label for="classtype">課程種類：</label>
+        <input type="text" name="classtype" id="classtype" required>
 
         <button type="submit">Upload Teacher Info</button>
     </form>

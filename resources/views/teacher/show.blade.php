@@ -14,6 +14,7 @@
     <p>Background: {{ $teacher->background }}</p>
     <p>Entry Time: {{ $teacher->entry }}</p>
     <img src="{{ asset('storage/' . $teacher->photo) }}" alt="Teacher Photo">
+    <a href="{{ route('teacher.edit', $teacher->id) }}"><button>Edit Teacher Information</button></a>
     <!-- Additional content/scripts -->
 </body>
 </html>
