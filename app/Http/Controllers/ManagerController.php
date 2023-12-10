@@ -41,9 +41,9 @@ class ManagerController extends Controller
                 'introduction' => 'required|string',
                 'know' => 'required|string',
                 'for_who' => 'required|string',
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'photo' => 'required|image|mimes:jpeg,png,jpg,gif',
                 'money' => 'required|numeric',
-                'classname' => 'required|string', // 新增 classname 的驗證
+                'classname' => 'required|string',
             ]);
 
             // 取得老師名字
