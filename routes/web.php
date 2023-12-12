@@ -40,9 +40,40 @@ Route::put('/teacher/{id}', [TeacherController::class, 'update'])->name('teacher
 
 use App\Http\Controllers\ManagerController;
 
-Route::get('/manager', [ManagerController::class, 'index'])->name('manager.index');
-Route::post('/manager/upload-link', [ManagerController::class, 'uploadYoutubeLink'])->name('manager.upload.link');
-Route::post('/manager/upload-teacher-info', [ManagerController::class, 'uploadTeacherInfo'])->name('manager.uploadTeacherInfo');
+Route::prefix('manager')->group(function () {
+    Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
+
+    // Edit Teacher Routes
+    Route::get('/editteacher', [ManagerController::class, 'editTeacherView'])->name('editTeacherView');
+    Route::get('/editteacher/{id}', [ManagerController::class, 'editTeacherForm'])->name('manager.editTeacherForm');
+    Route::put('/updateteacher/{id}', [ManagerController::class, 'updateTeacher'])->name('manager.updateTeacher');
+    Route::delete('/deleteteacher/{id}', [ManagerController::class, 'deleteTeacher'])->name('manager.deleteTeacher');
+
+    // Create Teacher Routes
+    Route::get('/create-teacher', [ManagerController::class, 'createTeacherView'])->name('manager.createTeacherView');
+    Route::post('/store-teacher', [ManagerController::class, 'storeTeacher'])->name('manager.storeTeacher');
+
+    // Edit Manager Account Route
+    Route::get('/edit-manager-account', [ManagerController::class, 'editManagerAccountView'])->name('editManagerAccountView');
+    Route::put('/update-manager-account', [ManagerController::class, 'updateManagerAccount'])->name('manager.updateManagerAccount');
+
+    // Register Student Routes
+    Route::get('/register-student', [ManagerController::class, 'registerStudentView'])->name('registerStudentView');
+    Route::post('/register-student', [ManagerController::class, 'registerStudent'])->name('manager.registerStudent');
+
+    Route::get('/courses', [ManagerController::class, 'coursesView'])->name('coursesView');
+    Route::get('/courses/{classname}/edit', [ManagerController::class, 'editClassView'])->name('editClassView');
+    Route::put('/manager/update-class/{id}', [ManagerController::class, 'updateClass'])->name('updateClass');
+
+
+    Route::get('/upload-course', [ManagerController::class, 'createCourse'])->name('uploadCourseView');
+    Route::post('/store-course', [ManagerController::class, 'storeCourse'])->name('storeCourse');
+
+
+
+});
+
+
 
 
 /*students*/
