@@ -119,43 +119,33 @@ class ManagerController extends Controller
 
 
 
-public function editManagerAccountView()
-{
-    // 获取需要编辑的管理員信息，如：
-    $managerId = auth()->id(); // 或者其他适合您应用程序的方式
-    $manager = Managerlist::findOrFail($managerId);
+public function editManagerView()
+    {
+        // 假设管理员ID是已知的，这里我们用id为1作为示例
+        $manager = Managerlist::findOrFail(1);
 
-    return view('manager.edit_manager_account', ['manager' => $manager]);
-}
-
-
-
-public function updateManagerAccount(Request $request)
-{
-    $managerId = auth()->id(); // 获取当前管理员ID
-    $manager = Managerlist::findOrFail($managerId);
-
-    // 验证请求数据
-    $request->validate([
-        'name' => 'required|string',
-        'account' => 'required|string|unique:managerlist,account,' . $managerId, // 防止账号重复
-        'password' => 'nullable|string', // 如果提供了密码，则验证
-    ]);
-
-    // 更新管理员信息
-    $manager->name = $request->name;
-    $manager->account = $request->account;
-
-    // 只在提供了新密码时更新密码
-    if ($request->filled('password')) {
-        $manager->password = $request->password; // 根据需要考虑加密密码
+        return view('manager.edit_manager', compact('manager'));
     }
 
-    $manager->save();
+    // 更新管理员信息
+    public function updateManager(Request $request)
+    {
+        $manager = Managerlist::findOrFail(1);
 
-    // 重定向到某个页面，并附带成功信息
-    return redirect()->route('editManagerAccountView')->with('success', 'Account updated successfully');
-}
+        $request->validate([
+            'name' => 'required|string',
+            'account' => 'required|string|unique:managerlist,account,1',
+            'password' => 'nullable|string',
+        ]);
+
+        $manager->update([
+            'name' => $request->name,
+            'account' => $request->account,
+            'password' => $request->password, // 考虑使用 Hash::make($request->password)
+        ]);
+
+        return redirect()->back()->with('success', 'Account updated successfully.');
+    }
 
 
 
@@ -297,15 +287,15 @@ public function createCourse()
         return view('manager.upload_course');
     }
 
+    // 处理课程上传表单提交
     public function storeCourse(Request $request)
-{
-    try {
-        // 驗證請求數據
-        $request->validate([
+    {
+        // 验证请求数据
+        $validatedData = $request->validate([
             'classname' => 'required|string|max:255',
-            'classtype' => 'nullable|string|max:255',
+            'classtype' => 'required|string|max:255',
             'link' => 'required|url',
-            'videotime' => 'required|string|max:10', // 格式 hh:mm:ss
+            'videotime' => 'required|string|max:10',
             'teachername' => 'required|string|max:255',
             'introduction' => 'required|string',
             'photo' => 'nullable|image|max:2048',
@@ -314,171 +304,33 @@ public function createCourse()
             'money' => 'required|numeric',
         ]);
 
-        // 根據 teachername 在 userlist 表中查找相應的 id
+        // 查找教师ID
         $teacher = Userlist::where('name', $request->input('teachername'))->first();
-
-        // 檢查是否找到相應的教師記錄
         if (!$teacher) {
+            Log::error('Teacher not found: ' . $request->input('teachername'));
             return back()->withErrors(['teachername' => 'Teacher not found'])->withInput();
         }
 
-        // 處理圖片上傳
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('public/courses');
-        }
+        // 处理图片上传
+        $photoPath = $request->hasFile('photo') ? $request->file('photo')->store('public/courses') : null;
 
-        // 儲存數據到 classlist 表
-        $classlist = new Classlist([
-            'classname' => $request->input('classname'),
-            'classtype' => $request->input('classtype'),
-            'link' => $request->input('link'),
+        // 创建并保存课程信息
+        Classlist::create([
+            'classname' => $validatedData['classname'],
+            'classtype' => $validatedData['classtype'],
+            'link' => $validatedData['link'],
             'teacherid' => $teacher->id,
-            'teachername' => $request->input('teachername'),
-            'videotime' => $request->input('videotime'), // 直接使用表單提供的時間
-            'introduction' => $request->input('introduction'),
+            'teachername' => $validatedData['teachername'],
+            'videotime' => $validatedData['videotime'],
+            'introduction' => $validatedData['introduction'],
             'photo' => $photoPath,
-            'know' => $request->input('know'),
-            'forwho' => $request->input('forwho'),
-            'money' => $request->input('money'),
-        ]);
-        $classlist->save();
-
-        return redirect()->route('someRouteName')->with('success', 'Course uploaded successfully.');
-    } catch (\Exception $e) {
-        // 處理錯誤，例如日誌記錄或返回錯誤訊息
-        Log::error('Error in storeCourse: ' . $e->getMessage());
-        return back()->withErrors(['error' => 'An error occurred during course upload. ' . $e->getMessage()])->withInput();
-    }
-}
-
-
-
-
-
-
-
-    public function uploadYoutubeLink(Request $request)
-    {
-        $request->validate([
-            'youtube_link' => 'required|url',
+            'know' => $validatedData['know'],
+            'forwho' => $validatedData['forwho'],
+            'money' => $validatedData['money'],
         ]);
 
-        $class = new Classlist();
-        $class->link = $request->input('youtube_link');
-        $class->save();
-
-        return redirect()->route('manager.index')->with('success', 'YouTube link uploaded successfully!');
+        // 重定向到课程列表或其他适当页面
+        return redirect()->route('uploadCourseView')->with('success', 'Course uploaded successfully.');
     }
 
-    public function uploadTeacherInfo(Request $request)
-    {
-        try {
-            // 檢驗請求資料
-            $request->validate([
-                'teacher_name' => 'required|string',
-                'youtube_link' => 'required|url',
-                'introduction' => 'required|string',
-                'know' => 'required|string',
-                'for_who' => 'required|string',
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif',
-                'money' => 'required|numeric',
-                'classname' => 'required|string',
-            ]);
-
-            // 取得老師名字
-            $teacherName = $request->input('teacher_name');
-            $teacherId = Userlist::where('name', $teacherName)->value('id');
-
-            // 上傳圖片到 storage
-            $photoPath = $request->file('photo')->store('photos');
-
-            // 取得 YouTube 影片長度
-            $youtubeId = $request->input('youtube_id');
-            $videoLength = $this->getYouTubeVideoLength($youtubeId);
-
-            // 確保 $videoLength 是數字，否則設置為預設值
-            $videoLength = is_numeric($videoLength) ? $videoLength : 0;
-
-            // 處理時間格式，確保是 H:i:s 格式
-            $videoTimeFormatted = $this->convertYouTubeDurationToHMS($videoLength);
-
-            // 新增資料到 classlist
-            $newClass = Classlist::create([
-                'teacherid' => $teacherId,
-                'teachername' => $teacherName,
-                'link' => $request->input('youtube_link'),
-                'videotime' => $videoTimeFormatted,
-                'introduction' => $request->input('introduction'),
-                'know' => $request->input('know'),
-                'forwho' => $request->input('for_who'),
-                'photo' => $photoPath,
-                'money' => $request->input('money'),
-                'classtype' => '一般課程',
-                'classname' => $request->input('classname'), // 確保 classname 欄位被填充
-            ]);
-
-            // 返回成功或重定向至某頁面，包含 videotime
-            return response()->json([
-                'message' => 'Teacher information uploaded successfully',
-                'videotime' => $newClass->videotime,
-                'youtube_id' => $youtubeId,
-            ], 200);
-
-        } catch (\Exception $e) {
-            // 處理錯誤，例如日誌記錄或返回錯誤訊息
-            Log::error('Error in uploadTeacherInfo: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred during teacher information upload. ' . $e->getMessage()], 500);
-        }
-    }
-
-    private function getYouTubeVideoLength($youtubeId)
-    {
-        try {
-            // 初始化 Google API 客戶端
-            $googleClient = new Google_Client();
-            $googleClient->setDeveloperKey(env('YOUTUBE_API_KEY')); // 設定您的 Google API 金鑰
-
-            // 初始化 YouTube 服務
-            $youtube = new YouTube($googleClient); // 修改這一行
-
-            // 使用 YouTube Data API 獲取影片詳細資訊
-            $videoInfo = $youtube->videos->listVideos('contentDetails', ['id' => $youtubeId]);
-
-            if (empty($videoInfo) || empty($videoInfo[0]->contentDetails->duration)) {
-                throw new \Exception('Unable to get video information from YouTube API.');
-            }
-
-            // 提取影片的持續時間（持續時間以 PT 格式返回）
-            $duration = $videoInfo[0]->contentDetails->duration;
-
-            // 轉換 PT 格式成 H:i:s
-            $videoLength = $this->convertYouTubeDurationToHMS($duration);
-
-            return $videoLength;
-        } catch (\Exception $e) {
-            // 處理錯誤，例如日誌記錄或返回預設值
-            Log::error('Error in getYouTubeVideoLength: ' . $e->getMessage());
-            return '00:00:00'; // 或者返回其他預設值
-        }
-    }
-
-    private function convertYouTubeDurationToHMS($duration)
-    {
-        try {
-            $interval = new \DateInterval($duration);
-
-            // 以秒為基礎計算總持續時間
-            $totalSeconds = ($interval->d * 24 * 60 * 60) + ($interval->h * 60 * 60) + ($interval->i * 60) + $interval->s;
-
-            // 格式化成 H:i:s
-            $hms = gmdate('H:i:s', $totalSeconds);
-
-            return $hms;
-        } catch (\Exception $e) {
-            // 處理錯誤，例如日誌記錄或返回預設值
-            Log::error('Error in convertYouTubeDurationToHMS: ' . $e->getMessage());
-            return '00:00:00'; // 或者返回其他預設值
-        }
-    }
 }

@@ -54,8 +54,9 @@ Route::prefix('manager')->group(function () {
     Route::post('/store-teacher', [ManagerController::class, 'storeTeacher'])->name('manager.storeTeacher');
 
     // Edit Manager Account Route
-    Route::get('/edit-manager-account', [ManagerController::class, 'editManagerAccountView'])->name('editManagerAccountView');
-    Route::put('/update-manager-account', [ManagerController::class, 'updateManagerAccount'])->name('manager.updateManagerAccount');
+    Route::get('/manager/edit-manager', [ManagerController::class, 'editManagerView'])->name('editManagerView');
+    Route::put('/manager/account', [ManagerController::class, 'updateManager'])->name('manager.updateManager');
+
 
     // Register Student Routes
     Route::get('/register-student', [ManagerController::class, 'registerStudentView'])->name('registerStudentView');
@@ -66,7 +67,10 @@ Route::prefix('manager')->group(function () {
     Route::put('/manager/update-class/{id}', [ManagerController::class, 'updateClass'])->name('updateClass');
 
 
+    // 显示上传课程表单的路由
     Route::get('/upload-course', [ManagerController::class, 'createCourse'])->name('uploadCourseView');
+
+    // 处理课程上传表单提交的路由
     Route::post('/store-course', [ManagerController::class, 'storeCourse'])->name('storeCourse');
 
 
