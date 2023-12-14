@@ -1,52 +1,72 @@
-{{-- resources/views/manager/register_student.blade.php --}}
-
 @extends('layouts.app')
 
 @section('content')
+<div class="container">
     <h2>Register Student</h2>
-
     <form action="{{ route('manager.registerStudent') }}" method="post">
         @csrf
 
-        <label for="account">Account:</label>
-        <input type="text" name="account" required><br>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" name="name" required>
+        </div>
 
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
+        <div class="form-group">
+            <label for="school">School:</label>
+            <input type="text" class="form-control" name="school" required>
+        </div>
 
-        <label for="school">School:</label>
-        <input type="text" name="school" required><br>
+        <div class="form-group">
+            <label for="grade">Grade:</label>
+            <input type="text" class="form-control" name="grade" required>
+        </div>
 
-        <label for="grade">Grade:</label>
-        <input type="text" name="grade" required><br>
+        <div class="form-group">
+            <label for="gmail">Gmail:</label>
+            <input type="email" class="form-control" name="gmail" required>
+        </div>
 
-        <label for="gmail">Gmail:</label>
-        <input type="email" name="gmail" required><br>
+        <div class="form-group">
+            <label for="stuaddress1">Student Address 1:</label>
+            <input type="text" class="form-control" name="stuaddress1" required>
+        </div>
 
-        <label for="stuaddress1">Student Address 1:</label>
-        <input type="text" name="stuaddress1" required><br>
+        <div class="form-group">
+            <label for="stuaddress2">Student Address 2:</label>
+            <input type="text" class="form-control" name="stuaddress2">
+        </div>
 
-        <label for="stuaddress2">Student Address 2:</label>
-        <input type="text" name="stuaddress2"><br>
+        <div class="form-group">
+            <label for="stuaddress3">Student Address 3:</label>
+            <input type="text" class="form-control" name="stuaddress3">
+        </div>
 
-        <label for="stuaddress3">Student Address 3:</label>
-        <input type="text" name="stuaddress3"><br>
+        <div class="form-group">
+            <label for="parname">Parent Name:</label>
+            <input type="text" class="form-control" name="parname" required>
+        </div>
 
-        <label for="parname">Parent Name:</label>
-        <input type="text" name="parname" required><br>
+        <div class="form-group">
+            <label for="pargmail">Parent Gmail:</label>
+            <input type="email" class="form-control" name="pargmail" required>
+        </div>
 
-        <label for="pargmail">Parent Gmail:</label>
-        <input type="email" name="pargmail" required><br>
+        <div class="form-group">
+            <label for="parnumber">Parent Phone Number:</label>
+            <input type="text" class="form-control" name="parnumber" required>
+        </div>
 
-        <label for="parnumber">Parent Phone Number:</label>
-        <input type="text" name="parnumber" required><br>
+        <div class="form-group">
+            <label for="Howtoknow">How to Know:</label>
+            <input type="text" class="form-control" name="Howtoknow" required>
+        </div>
 
-        <label for="Howtoknow">How to Know:</label>
-        <input type="text" name="Howtoknow" required><br>
-
-        <button type="submit">Register Student</button>
+        <button type="submit" class="btn btn-primary">Register Student</button>
     </form>
+</div>
 @endsection

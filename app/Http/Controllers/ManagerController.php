@@ -13,6 +13,8 @@ use Google_Service_YouTube;
 use Google\Service\YouTube;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateClassRequest;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class ManagerController extends Controller
 {
@@ -163,12 +165,10 @@ public function registerStudentView()
     return view('manager.register_student');
 }
 
-// 创建新学生
 public function registerStudent(Request $request)
 {
     // 验证请求数据
     $request->validate([
-        'account' => 'required|string|unique:stulist,account',
         'password' => 'required|string',
         'name' => 'required|string',
         'school' => 'required|string',
@@ -183,10 +183,15 @@ public function registerStudent(Request $request)
         'Howtoknow' => 'required|string',
     ]);
 
+    // 自动生成学生账号
+    $latestStudent = Stulist::latest('id')->first();
+    $nextId = $latestStudent ? intval(substr($latestStudent->account, 3)) + 1 : 1;
+    $account = 'STU' . str_pad($nextId, 7, '0', STR_PAD_LEFT);
+
     // 创建新的学生记录
-    Stulist::create([
-        'account' => $request->account,
-        'password' => $request->password, // 不使用 hash，请谨慎保存明文密码
+    $student = Stulist::create([
+        'account' => $account,
+        'password' => $request->password, // 考虑加密
         'name' => $request->name,
         'school' => $request->school,
         'grade' => $request->grade,
@@ -200,8 +205,25 @@ public function registerStudent(Request $request)
         'Howtoknow' => $request->Howtoknow,
     ]);
 
+    // 为学生创建课程信息表
+    $this->createStudentCourseTable($account);
+
     return back()->with('success', 'Student registered successfully');
 }
+
+protected function createStudentCourseTable($account)
+{
+    $tableName = $account;
+    Schema::create($tableName, function (Blueprint $table) {
+        $table->id();
+        $table->string('classname');
+        $table->string('classbuy');
+        $table->integer('watchtime');
+        $table->integer('videotime');
+        $table->timestamps();
+    });
+}
+
 
 
 
@@ -329,8 +351,35 @@ public function createCourse()
             'money' => $validatedData['money'],
         ]);
 
+// 获取课程名称
+$classname = $validatedData['classname'];
+
+// 创建以课程名称命名的新表
+$this->createCourseTable($classname);
+
+
         // 重定向到课程列表或其他适当页面
         return redirect()->route('uploadCourseView')->with('success', 'Course uploaded successfully.');
     }
 
+
+
+
+
+    protected function createCourseTable($classname)
+{
+    // 将课程名称格式化为适合的表名
+    $tableName =  $classname;
+
+    // 检查表是否已经存在
+    if (!Schema::hasTable($tableName)) {
+        Schema::create($tableName, function (Blueprint $table) {
+            $table->id();
+            $table->string('student_account');
+            $table->timestamps();
+        });
+    }
 }
+}
+
+

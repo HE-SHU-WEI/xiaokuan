@@ -17,6 +17,7 @@ class LoginController extends Controller
         return view('login');
     }
 
+
     public function login(Request $request)
     {
         $request->validate([
@@ -26,14 +27,16 @@ class LoginController extends Controller
 
         // 在 userlist 中尋找
         $user = Userlist::where('account', $request->account)
-            ->where('password', $request->password)
-            ->first();
+                        ->where('password', $request->password)
+                        ->first();
 
-        if ($user) {
-            Auth::login($user);
+                        if ($user) {
+                            Auth::login($user);
 
-            return redirect()->route('teacher.show', ['id' => $user->id]);
-        }
+                            // 登录成功，重定向到 TeacherController 的 index 方法
+                            // 并传递用户ID
+                            return redirect()->route('teacher.index', ['id' => $user->id]);
+                        }
 
         // 在 stulist 中尋找
         $student = Stulist::where('account', $request->account)

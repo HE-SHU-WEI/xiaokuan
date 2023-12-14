@@ -2,39 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Userlist;
 use Illuminate\Http\Request;
+use App\Models\Classlist;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class TeacherController extends Controller
 {
-    public function show($id)
+    public function index($id)
     {
-        $teacher = Userlist::findOrFail($id);
-        return view('teacher.show', compact('teacher'));
+        $courses = Classlist::where('teacherid', $id)->get();
+        return view('teacher.index', compact('courses'));
     }
 
-    public function edit($id)
-    {
-        $teacher = Userlist::findOrFail($id);
-        return view('teacher.edit', compact('teacher'));
+    public function showStudents($classname)
+{
+    // 格式化课程名称以创建合法的表名
+    $tableName = $classname;
+
+    // 检查表是否存在
+    if (!Schema::hasTable($tableName)) {
+        // 如果表不存在，返回错误或空学生列表
+        return back()->withErrors(['error' => 'Course not found.']);
     }
 
-    public function update(Request $request, $id)
-    {
-        $teacher = Userlist::findOrFail($id);
-        $teacher->name = $request->input('name');
-        $teacher->introduction = $request->input('introduction');
-        $teacher->background = $request->input('background');
+    // 查询对应课程表中的学生账号
+    $students = DB::table($tableName)->select('student_account')->get();
 
-        if ($request->hasFile('photo')) {
-            // Handle photo upload
-            $photoPath = $request->file('photo')->store('teacher_photos', 'public');
-            $teacher->photo = $photoPath;
-        }
+    return view('teacher.show_students', compact('classname', 'students'));
+}
 
-        $teacher->entry = $request->input('entry');
-        $teacher->save();
 
-        return redirect()->route('teacher.show', $teacher->id)->with('success', 'Teacher information updated successfully!');
-    }
 }

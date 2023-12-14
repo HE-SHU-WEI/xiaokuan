@@ -31,9 +31,9 @@ Route::get('/main', [MainController::class, 'index'])->name('main.index');
 
 use App\Http\Controllers\TeacherController;
 
-Route::get('/teacher/{id}', [TeacherController::class, 'show'])->name('teacher.show');
-Route::get('/teacher/{id}/edit', [TeacherController::class, 'edit'])->name('teacher.edit');
-Route::put('/teacher/{id}', [TeacherController::class, 'update'])->name('teacher.update');
+Route::get('/teacher/{id}', [TeacherController::class, 'index'])->name('teacher.index');
+Route::get('/teacher/{classname}/students', [TeacherController::class, 'showStudents'])->name('teacher.showStudents');
+
 
 
 /*manager*/
@@ -59,8 +59,8 @@ Route::prefix('manager')->group(function () {
 
 
     // Register Student Routes
-    Route::get('/register-student', [ManagerController::class, 'registerStudentView'])->name('registerStudentView');
-    Route::post('/register-student', [ManagerController::class, 'registerStudent'])->name('manager.registerStudent');
+    Route::get('/manager/register-student', [ManagerController::class, 'registerStudentView'])->name('registerStudentView');
+    Route::post('/manager/register-student', [ManagerController::class, 'registerStudent'])->name('manager.registerStudent');
 
     Route::get('/courses', [ManagerController::class, 'coursesView'])->name('coursesView');
     Route::get('/courses/{classname}/edit', [ManagerController::class, 'editClassView'])->name('editClassView');
@@ -91,6 +91,7 @@ Route::get('/student', [StudentController::class, 'index'])->name('student.index
 use App\Http\Controllers\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
