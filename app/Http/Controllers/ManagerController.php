@@ -34,31 +34,34 @@ class ManagerController extends Controller
         return view('manager.create_teacher');
     }
 
-    public function createTeacher(Request $request)
+    public function storeTeacher(Request $request)
     {
         // 验证请求数据
         $request->validate([
             'name' => 'required|string',
             'account' => 'required|string|unique:userlist,account',
+            'password' => 'required|string|unique:userlist,password',
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
             'photo' => 'nullable|image',
             'entry' => 'nullable|date',
         ]);
 
-        // 处理图片上传
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('public/teachers');
-        }
+        // 处理新增老師图片上传
+        $photoPath =  $request->file('photo')->getClientOriginalName();
+        $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
+
+
+
 
         // 创建新的老师记录
         Userlist::create([
             'name' => $request->name,
             'account' => $request->account,
+            'password' => $request->password,
             'introduction' => $request->introduction,
             'background' => $request->background,
-            'photo' => $photoPath ? Storage::url($photoPath) : null,
+            'photo' => 'photos/'.$photoPath,
             'entry' => $request->entry,
         ]);
 
@@ -95,16 +98,18 @@ class ManagerController extends Controller
         $teacher->introduction = $request->introduction;
         $teacher->background = $request->background;
 
-        // 处理图片上传
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('public/teachers');
-            $teacher->photo = Storage::url($photoPath);
-        }
+        // 处理更新老師图片上传
+        $photoPath = 'photos/' . $request->file('photo')->getClientOriginalName();
+
+        // 将文件上传到 public/storage/photos 目录
+        $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
+        $teacher->photo = $photoPath;
+
 
         $teacher->entry = $request->entry;
         $teacher->save();
 
-        return redirect()->route('manager.editTeacherView')->with('success', 'Teacher updated successfully');
+        return redirect()->route('editTeacherView')->with('success', 'Teacher updated successfully');
     }
 
     public function deleteTeacher($teacherId)
@@ -320,7 +325,7 @@ public function createCourse()
             'videotime' => 'required|string|max:10',
             'teachername' => 'required|string|max:255',
             'introduction' => 'required|string',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image',
             'know' => 'required|string|max:255',
             'forwho' => 'required|string|max:255',
             'money' => 'required|numeric',
@@ -334,7 +339,13 @@ public function createCourse()
         }
 
         // 处理图片上传
-        $photoPath = $request->hasFile('photo') ? $request->file('photo')->store('public/courses') : null;
+        $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;
+        if ($photoPath) {
+            // 将文件上传到 public/storage/photos 目录
+            $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
+        }
+
+
 
         // 创建并保存课程信息
         Classlist::create([
