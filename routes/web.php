@@ -74,7 +74,16 @@ Route::prefix('manager')->group(function () {
     Route::post('/store-course', [ManagerController::class, 'storeCourse'])->name('storeCourse');
 
 
+    //購買課程
+    Route::get('/manager/student-purchase-form', [ManagerController::class, 'studentPurchaseFormView'])
+    ->name('studentPurchaseFormView');
 
+// 處理新增購課記錄的請求
+
+Route::get('/student-purchase-form', [ManagerController::class, 'studentPurchaseFormView'])
+        ->name('studentPurchaseFormView');
+    Route::post('/store-student-purchase', [ManagerController::class, 'storeStudentPurchase'])
+        ->name('storeStudentPurchase');
 
 
 
@@ -98,7 +107,6 @@ Route::get('/student', [StudentController::class, 'index'])->name('student.index
 use App\Http\Controllers\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 

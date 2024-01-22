@@ -1,5 +1,8 @@
 <?php
 
+//managercontroller
+
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,16 +10,16 @@ use App\Models\Classlist;
 use App\Models\Userlist;
 use App\Models\Managerlist;
 use App\Models\Stulist;
-use Illuminate\Support\Facades\Storage;
-use Google_Client;
-use Google_Service_YouTube;
-use Google\Service\YouTube;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateClassRequest;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\StudentRegistrationMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Carbon;
+
 
 class ManagerController extends Controller
 {
@@ -230,8 +233,9 @@ protected function createStudentCourseTable($account)
         $table->id();
         $table->string('classname');
         $table->string('classbuy');
-        $table->integer('watchtime');
-        $table->integer('videotime');
+        $table->time('watchtime');
+        $table->time('videotime');
+        $table->date('classend');
         $table->timestamps();
     });
 }
@@ -400,6 +404,60 @@ $this->createCourseTable($classname);
         });
     }
 }
+
+
+
+
+
+
+
+
+//---購買課程---------------------------------
+// 學生購課畫面
+public function studentPurchaseFormView()
+{
+    $classes = Classlist::pluck('classname'); // 取得所有課程名稱
+    return view('manager.student_purchase_form', ['classes' => $classes]);
+}
+
+public function storeStudentPurchase(Request $request)
+{
+    $request->validate([
+        'classname' => 'required|string',
+        'student_account' => 'required|string|starts_with:STU',
+        'student_name' => 'required|string',
+        'class_expire_date' => 'required|date',
+    ]);
+
+    // 驗證課程是否存在
+    $class = Classlist::where('classname', $request->classname)->first();
+    if (!$class) {
+        return back()->withErrors(['classname' => 'Invalid class selected']);
+    }
+
+    // 取得學生的資料表名稱，假設學號為 STU123，資料表名稱為 stu123
+    $studentTableName = strtolower($request->student_account);
+
+    // 驗證學生的資料表是否存在
+    if (!Schema::hasTable($studentTableName)) {
+        return back()->withErrors(['student_account' => 'Student table not found']);
+    }
+
+    // 在學生的資料表中新增一筆資料，並取得課程的 videotime
+    $videotime = $class->videotime;
+
+    DB::table($studentTableName)->insert([
+        'classname' => $request->classname,
+        'classbuy' => 'BUY',
+        'watchtime' => '00:00:00',
+        'classend' => $request->class_expire_date,
+        'videotime' => $videotime,
+    ]);
+
+    return back()->with('success', 'Student purchase record added successfully.');
+}
+
+
 }
 
 
