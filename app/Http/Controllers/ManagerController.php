@@ -15,28 +15,30 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateClassRequest;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StudentRegistrationMail;
 
 class ManagerController extends Controller
 {
 
     public function editTeacherView()
     {
-        // 获取所有老师的列表
-        $teachers = Userlist::all(); // 这里假设 Userlist 中存储了所有老师的信息
 
-        // 返回编辑老师的视图，并传递老师列表
+        $teachers = Userlist::all();
+
+
         return view('manager.edit_teacher', ['teachers' => $teachers]);
     }
 
     public function createTeacherView()
     {
-        // 这里返回一个用于创建新老师的表单视图
+
         return view('manager.create_teacher');
     }
 
     public function storeTeacher(Request $request)
     {
-        // 验证请求数据
+
         $request->validate([
             'name' => 'required|string',
             'account' => 'required|string|unique:userlist,account',
@@ -73,13 +75,13 @@ class ManagerController extends Controller
         // 通过 ID 查找老师
         $teacher = Userlist::findOrFail($teacherId);
 
-        // 返回编辑老师的视图，并传递老师信息
+
         return view('manager.edit_teacher_form', ['teacher' => $teacher]);
     }
 
     public function updateTeacher(Request $request, $teacherId)
     {
-        // 验证请求数据
+
         $request->validate([
             'name' => 'required|string',
             'account' => 'required|string|unique:userlist,account,' . $teacherId,
@@ -92,19 +94,21 @@ class ManagerController extends Controller
         // 通过 ID 查找老师
         $teacher = Userlist::findOrFail($teacherId);
 
-        // 更新老师记录
+        // 更新紀錄
         $teacher->name = $request->name;
         $teacher->account = $request->account;
         $teacher->introduction = $request->introduction;
         $teacher->background = $request->background;
 
+        $photoPath = null;
         // 处理更新老師图片上传
+        if ($photoPath){
         $photoPath = 'photos/' . $request->file('photo')->getClientOriginalName();
 
         // 将文件上传到 public/storage/photos 目录
         $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
         $teacher->photo = $photoPath;
-
+        }
 
         $teacher->entry = $request->entry;
         $teacher->save();
@@ -212,6 +216,9 @@ public function registerStudent(Request $request)
 
     // 为学生创建课程信息表
     $this->createStudentCourseTable($account);
+
+    Mail::to($request->input('gmail'))->send(new StudentRegistrationMail($student));
+    Mail::to($request->input('pargmail'))->send(new StudentRegistrationMail($student));
 
     return back()->with('success', 'Student registered successfully');
 }
@@ -337,6 +344,8 @@ public function createCourse()
             Log::error('Teacher not found: ' . $request->input('teachername'));
             return back()->withErrors(['teachername' => 'Teacher not found'])->withInput();
         }
+
+
 
         // 处理图片上传
         $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;

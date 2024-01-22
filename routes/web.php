@@ -75,6 +75,13 @@ Route::prefix('manager')->group(function () {
 
 
 
+
+
+
+
+
+
+
 });
 
 
@@ -100,5 +107,10 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 use App\Http\Controllers\ClassController;
 
 Route::get('/class', [ClassController::class, 'index'])->name('class.index');
+//class篩選
+Route::post('/filter-classes', 'YourController@filterClasses')->name('filterClasses');
+Route::get('/classes', [ClassController::class, 'index'])->name('class.index');
+//class細節
+Route::get('/class/{id}', [ClassController::class, 'show'])->name('showClass');
 
 
