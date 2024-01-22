@@ -454,6 +454,10 @@ public function storeStudentPurchase(Request $request)
         'videotime' => $videotime,
     ]);
 
+    DB::table($request->classname)->insert([
+        'student_account' => $request->student_account,
+    ]);
+
     return back()->with('success', 'Student purchase record added successfully.');
 }
 
