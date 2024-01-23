@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Userlist;
 use App\Models\Stulist;
 use App\Models\Managerlist;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -72,4 +73,17 @@ class LoginController extends Controller
 
         return redirect()->route('login.form')->with('error', 'Invalid credentials');
     }
+
+
+
+    //*----------------------------------------------------------------
+
+    public function logout()
+{
+    // 清除相應的 Session 資訊
+    Session::forget('remembered_account');
+
+    // 重定向到 login.blade.php
+    return redirect(route('login.form'));
+}
 }

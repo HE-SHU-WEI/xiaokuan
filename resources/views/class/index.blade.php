@@ -2,6 +2,11 @@
 
 @section('content')
     <h2>Filtered Class List</h2>
+    <!-- 登出按鈕 -->
+    <form method="post" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
 
     {{-- 顯示可選的課程類型 --}}
     <form action="{{ route('class.index') }}" method="get">
@@ -31,9 +36,6 @@
     @empty
         <p>No classes found.</p>
     @endforelse
+
+
 @endsection
-
-
-
-
-

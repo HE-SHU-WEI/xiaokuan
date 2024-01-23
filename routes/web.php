@@ -124,3 +124,5 @@ Route::get('/class/{id}', [ClassController::class, 'show'])->name('showClass');
 Route::post('/addToCart/{id}', [ClassController::class, 'addToCart'])->name('addToCart');
 
 
+// 在 routes/web.php 中添加
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
