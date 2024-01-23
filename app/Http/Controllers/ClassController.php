@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Classlist;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
 
 class ClassController extends Controller
 {
@@ -41,12 +47,56 @@ class ClassController extends Controller
         return view('class.index', compact('filteredClasses', 'classTypes', 'selectedClassTypes'));
     }
 
-//----------------------------------------------------------------
+
+
+
     public function show($id)
     {
-        // 根據課程ID查找課程
         $class = Classlist::findOrFail($id);
 
         return view('class.show', compact('class'));
     }
+
+    public function addToCart($id)
+{
+    // 檢查 Session 中是否有 remembered_account
+    if (session()->has('remembered_account')) {
+        // 獲取當前課程
+        $class = Classlist::findOrFail($id);
+
+        // 獲取使用者的 remembered_account
+        $userAccount = session('remembered_account');
+
+        // 插入資料到使用者的資料表，將classend設置為NULL
+        DB::table($userAccount)->insert([
+            'classname' => $class->classname,
+            'classbuy' => 'NO',
+            'watchtime' => '00:00:00',
+            'videotime' => $class->videotime,
+            'classend' => null, // 將classend設置為NULL
+        ]);
+
+        return redirect()->route('showClass', ['id' => $id])->with('success', '課程已加入購物車');
+    } else {
+        // 如果未登入，存儲當前 URL 到 Session 並重定向到登入頁面
+        session(['redirectClass' => route('showClass', ['id' => $id])]);
+
+        return redirect()->route('login.form')->with('error', '請先登入');
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/LoginController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,9 +12,11 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('login');
-    }
+        // 檢查 Session 是否存在使用者的 account
+        $rememberedAccount = session('remembered_account');
 
+        return view('login', compact('rememberedAccount'));
+    }
 
     public function login(Request $request)
     {
@@ -25,43 +25,51 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // 在 userlist 中尋找
+        // 先清除可能存在的先前記憶的 account
+        session()->forget('remembered_account');
+
+        // 使用者登入
         $user = Userlist::where('account', $request->account)
                         ->where('password', $request->password)
                         ->first();
 
-                        if ($user) {
-                            Auth::login($user);
+        if ($user) {
+            Auth::guard('web')->login($user);
 
-                            // 登录成功，重定向到 TeacherController 的 index 方法
-                            // 并传递用户ID
-                            return redirect()->route('teacher.index', ['id' => $user->id]);
-                        }
+            // 登入成功，將 account 存入 Session
+            session(['remembered_account' => $request->account]);
 
-        // 在 stulist 中尋找
+            return redirect()->route('teacher.index', ['id' => $user->id]);
+        }
+
+        // 學生登入
         $student = Stulist::where('account', $request->account)
             ->where('password', $request->password)
             ->first();
 
         if ($student) {
-            Auth::login($student);
+            Auth::guard('web')->login($student);
 
-            // return redirect()->route('student.show', ['id' => $student->id]);
+            // 登入成功，將 account 存入 Session
+            session(['remembered_account' => $request->account]);
+
             return redirect()->route('student.index');
         }
 
-        // 在 managerlist 中尋找
+        // 管理員登入
         $manager = Managerlist::where('account', $request->account)
             ->where('password', $request->password)
             ->first();
 
         if ($manager) {
-            Auth::login($manager);
+            Auth::guard('web')->login($manager);
+
+            // 登入成功，將 account 存入 Session
+            session(['remembered_account' => $request->account]);
 
             return redirect()->route('manager.index');
         }
 
-        // 登入失敗
         return redirect()->route('login.form')->with('error', 'Invalid credentials');
     }
 }

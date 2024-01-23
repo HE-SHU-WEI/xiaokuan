@@ -3,20 +3,20 @@ namespace App\Providers;
 
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Stulist;
+use App\Models\Managerlist;
 
-class StudentServiceProvider extends ServiceProvider
+class ManagerServiceProvider extends ServiceProvider implements UserProvider
 {
     // 根據給定的主鍵檢索使用者
     public function retrieveById($identifier)
     {
-        return Stulist::find($identifier);
+        return Managerlist::find($identifier);
     }
 
     // 根據憑證檢索使用者
     public function retrieveByCredentials(array $credentials)
     {
-        return Stulist::where('account', $credentials['account'])->first();
+        return Managerlist::where('account', $credentials['account'])->first();
     }
 
     // 驗證使用者的憑證
@@ -38,7 +38,5 @@ class StudentServiceProvider extends ServiceProvider
     {
         // Implementation
     }
-
-    // 根據給定的憑證檢索使用者
 
 }

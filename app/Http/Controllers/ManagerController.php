@@ -235,7 +235,7 @@ protected function createStudentCourseTable($account)
         $table->string('classbuy');
         $table->time('watchtime');
         $table->time('videotime');
-        $table->date('classend');
+        $table->date('classend')->nullable();
         $table->timestamps();
     });
 }

@@ -120,5 +120,7 @@ Route::post('/filter-classes', 'YourController@filterClasses')->name('filterClas
 Route::get('/classes', [ClassController::class, 'index'])->name('class.index');
 //class細節
 Route::get('/class/{id}', [ClassController::class, 'show'])->name('showClass');
+//購物車
+Route::post('/addToCart/{id}', [ClassController::class, 'addToCart'])->name('addToCart');
 
 
