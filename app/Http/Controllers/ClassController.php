@@ -70,7 +70,7 @@ class ClassController extends Controller
         // 插入資料到使用者的資料表，將classend設置為NULL
         DB::table($userAccount)->insert([
             'classname' => $class->classname,
-            'classbuy' => 'NO',
+            'classbuy' => 'NOBUY',
             'watchtime' => '00:00:00',
             'videotime' => $class->videotime,
             'classend' => null, // 將classend設置為NULL

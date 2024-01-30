@@ -101,6 +101,7 @@ Route::get('/student-purchase-form', [ManagerController::class, 'studentPurchase
 use App\Http\Controllers\StudentController;
 
 Route::get('/student', [StudentController::class, 'index'])->name('student.index');
+Route::get('/cart/show', [StudentController::class,'showShoppingCart'])->name('cart.show');
 
 /*login*/
 
