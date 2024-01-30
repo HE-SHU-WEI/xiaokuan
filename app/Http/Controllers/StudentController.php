@@ -35,7 +35,8 @@ class StudentController extends Controller
 
 
 
-
+//----------------------------------------------------------------
+//購物車
 
 
 
@@ -74,7 +75,63 @@ class StudentController extends Controller
         }
     }
 
+//----------------------------------------------------------------
+//看課程
+    public function showWatchCourses()
+    {
+        // 獲取目前登入學生的專屬資料表名稱
+        $rememberedAccount = session('remembered_account');
+        $student = $rememberedAccount;
 
+        if ($student) {
+            // 使用 $student->remembered_account 或其他相關的字段來獲取專屬資料表名稱
+            $studentTableName = $student;
 
+            // 查詢 classbuy 是 "BUY" 的所有課程
+            $watchCourses = DB::table($studentTableName)
+                ->where('classbuy', 'BUY')
+                ->get();
+
+            // 透過 classname 查詢 classlist 資訊
+            $courseDetails = [];
+            foreach ($watchCourses as $course) {
+                $classInfo = DB::table('classlist')
+                    ->where('classname', $course->classname)
+                    ->first();
+
+                if ($classInfo) {
+                    $courseDetails[] = [
+                        'photo' => $classInfo->photo,
+                        'classname' => $classInfo->classname,
+                        // 可以添加其他你需要的資訊
+                    ];
+                }
+            }
+
+            // 傳遞資訊到視圖
+            return view('student.watch_courses', compact('watchCourses', 'courseDetails'));
+        } else {
+            return redirect()->route('login.form')->with('error', '學生資料不存在');
+        }
+    }
+
+    //----------------------------------------------------------------
+    // 在 StudentController.php 中
+
+    public function showWatchVideo($classname)
+    {
+        // 查詢 classlist 資訊
+        $classInfo = DB::table('classlist')
+            ->where('classname', $classname)
+            ->first();
+
+        if ($classInfo) {
+            $link = $classInfo->link;
+            return view('student.watch_video', compact('link'));
+        } else {
+            // 若找不到相應課程，可進行處理或重新導向
+            return redirect()->route('student.index')->with('error', '課程資訊不存在');
+        }
+    }
 
 }

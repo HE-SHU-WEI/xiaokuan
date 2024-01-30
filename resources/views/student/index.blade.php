@@ -3,13 +3,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Welcome, {{ $studentName }}</h2>
+    <h2>歡迎登入, {{ $studentName }}</h2>
 
     <!-- Add a button to redirect to the class page -->
-    <a href="{{ route('class.index') }}" class="btn btn-primary">Go to Classes</a>
+    <a href="{{ route('class.index') }}" class="btn btn-primary">去購買課程</a><br>
 
     <!-- Add a button to view shopping cart -->
-    <a href="{{ route('cart.show') }}" class="btn btn-info">View Shopping Cart</a>
+    <a href="{{ route('cart.show') }}" class="btn btn-info">查看購物車</a>
+
+    <a href="{{ route('watch.courses') }}" class="btn btn-success">Watch Courses</a>
 
     <!-- Logout button -->
     <form method="post" action="{{ route('logout') }}">

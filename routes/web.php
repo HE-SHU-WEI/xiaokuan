@@ -102,6 +102,8 @@ use App\Http\Controllers\StudentController;
 
 Route::get('/student', [StudentController::class, 'index'])->name('student.index');
 Route::get('/cart/show', [StudentController::class,'showShoppingCart'])->name('cart.show');
+Route::get('/watch-courses', [StudentController::class,'showWatchCourses'])->name('watch.courses');
+Route::get('/watch-video/{classname}', [StudentController::class,'showWatchVideo'])->name('watch.video');
 
 /*login*/
 
