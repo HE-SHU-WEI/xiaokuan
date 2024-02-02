@@ -1,4 +1,4 @@
-<!-- student/shopping_cart.blade.php -->
+<!-- resources/views/student/shopping_cart.blade.php -->
 
 @extends('layouts.app')
 
@@ -16,9 +16,15 @@
                             <strong>課程對象:</strong> {{ $cartDetails[$index]['forwho'] }}<br>
                             <strong>價格:</strong> {{ $cartDetails[$index]['money'] }}
                         </td>
+                        <td>
+                            <form action="{{ route('purchase', ['classname' => $item->classname]) }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-success">購買</button>
+                            </form>
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="2">&nbsp;</td> <!-- 空行 -->
+                        <td colspan="3">&nbsp;</td> <!-- 空行 -->
                     </tr>
                 @endforeach
             </tbody>

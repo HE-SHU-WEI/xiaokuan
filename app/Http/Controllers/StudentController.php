@@ -1,11 +1,13 @@
 <?php
 
 // app/Http/Controllers/StudentController.php
-
 namespace App\Http\Controllers;
 use App\Models\Stulist;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PurchaseConfirmation;
 
 class StudentController extends Controller
 {
@@ -116,22 +118,71 @@ class StudentController extends Controller
     }
 
     //----------------------------------------------------------------
-    // 在 StudentController.php 中
+    //
 
     public function showWatchVideo($classname)
-    {
-        // 查詢 classlist 資訊
-        $classInfo = DB::table('classlist')
-            ->where('classname', $classname)
-            ->first();
+{
+    // 查詢 classlist 資訊
+    $classInfo = DB::table('classlist')
+        ->where('classname', $classname)
+        ->first();
 
-        if ($classInfo) {
-            $link = $classInfo->link;
-            return view('student.watch_video', compact('link'));
-        } else {
-            // 若找不到相應課程，可進行處理或重新導向
-            return redirect()->route('student.index')->with('error', '課程資訊不存在');
-        }
+    if ($classInfo) {
+        $link = $classInfo->link;
+        return view('student.watch_video', compact('link'));
+    } else {
+        // 若找不到相應課程，可進行處理或重新導向
+        return redirect()->route('student.index')->with('error', '課程資訊不存在');
     }
+}
+
+
+
+
+//----------------------------------------------------------------
+
+
+public function purchase(Request $request)
+{
+    $studentAccount = Session::get('remembered_account');
+
+    // 查找学生信息
+    $student = Stulist::where('account', $studentAccount)->first();
+
+    if ($student) {
+        // 发送邮件到学生邮箱
+        Mail::to($student->gmail)->send(new PurchaseConfirmation());
+
+        // 如果有家长信箱，也发送给家长
+        if ($student->pargmail) {
+            Mail::to($student->pargmail)->send(new PurchaseConfirmation());
+        }
+
+        // 更新学生的购买状态为 "BUY"
+        $studentTableName = $studentAccount;
+        $classname = $request->input('classname');
+
+        // 更新数据库中的classbuy列为"BUY"
+        DB::table($studentTableName)
+            ->where('classname', $classname)
+            ->update(['classbuy' => 'BUY']);
+
+        return redirect()->route('student.index')->with('success', 'Purchase successful, emails sent');
+    } else {
+        return redirect()->route('login.form')->with('error', 'Student data not found');
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
