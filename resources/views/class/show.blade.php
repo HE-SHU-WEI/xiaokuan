@@ -26,10 +26,12 @@
     </div>
 @endsection
 
+
+
 @if(session()->has('remembered_account'))
     {{-- Session 中有填入 remembered_account --}}
-    <p>Remembered Account: {{ session('remembered_account') }}</p>
+    <p>目前登入的學號: {{ session('remembered_account') }}</p>
 @else
     {{-- Session 中沒有填入 remembered_account --}}
-    <p>No remembered account found in session.</p>
+    <p>目前沒有登入</p>
 @endif

@@ -3,30 +3,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Edit Teacher</h2>
+    <h2>編輯老師資訊</h2>
 
     <form action="{{ route('manager.updateTeacher', $teacher->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
-        <label for="name">Name:</label>
+        <label for="name">姓名:</label>
         <input type="text" name="name" value="{{ $teacher->name }}" required><br>
 
-        <label for="account">Account:</label>
+        <label for="account">帳號:</label>
         <input type="text" name="account" value="{{ $teacher->account }}" required><br>
 
-        <label for="introduction">Introduction:</label>
+        <label for="introduction">介紹:</label>
         <textarea name="introduction">{{ $teacher->introduction }}</textarea><br>
 
-        <label for="background">Background:</label>
+        <label for="background">老師背景:</label>
         <textarea name="background">{{ $teacher->background }}</textarea><br>
 
-        <label for="photo">Photo:</label>
+        <label for="photo">照片:</label>
         <input type="file" name="photo"><br>
 
-        <label for="entry">Entry Date:</label>
+        <label for="entry">加入時間:</label>
         <input type="date" name="entry" value="{{ $teacher->entry }}"><br>
 
-        <button type="submit">Update Teacher</button>
+        <button type="submit">更新</button>
     </form>
 @endsection

@@ -2,27 +2,27 @@
 
 @section('content')
 <div class="container">
-    <h2>Register Student</h2>
+    <h2>學生註冊</h2>
     <form action="{{ route('manager.registerStudent') }}" method="post">
         @csrf
 
         <div class="form-group">
-            <label for="password">Password:</label>
+            <label for="password">密碼:</label>
             <input type="password" class="form-control" name="password" required>
         </div>
 
         <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name">姓名:</label>
             <input type="text" class="form-control" name="name" required>
         </div>
 
         <div class="form-group">
-            <label for="school">School:</label>
+            <label for="school">學校:</label>
             <input type="text" class="form-control" name="school" required>
         </div>
 
         <div class="form-group">
-            <label for="grade">Grade:</label>
+            <label for="grade">年級:</label>
             <input type="text" class="form-control" name="grade" required>
         </div>
 
@@ -32,41 +32,41 @@
         </div>
 
         <div class="form-group">
-            <label for="stuaddress1">Student Address 1:</label>
+            <label for="stuaddress1">學生住址 1:</label>
             <input type="text" class="form-control" name="stuaddress1" required>
         </div>
 
         <div class="form-group">
-            <label for="stuaddress2">Student Address 2:</label>
+            <label for="stuaddress2">學生住址 2:</label>
             <input type="text" class="form-control" name="stuaddress2">
         </div>
 
         <div class="form-group">
-            <label for="stuaddress3">Student Address 3:</label>
+            <label for="stuaddress3">學生住址 3:</label>
             <input type="text" class="form-control" name="stuaddress3">
         </div>
 
         <div class="form-group">
-            <label for="parname">Parent Name:</label>
+            <label for="parname">家長姓名:</label>
             <input type="text" class="form-control" name="parname" required>
         </div>
 
         <div class="form-group">
-            <label for="pargmail">Parent Gmail:</label>
+            <label for="pargmail">家長 Gmail:</label>
             <input type="email" class="form-control" name="pargmail" required>
         </div>
 
         <div class="form-group">
-            <label for="parnumber">Parent Phone Number:</label>
+            <label for="parnumber">家長電話:</label>
             <input type="text" class="form-control" name="parnumber" required>
         </div>
 
         <div class="form-group">
-            <label for="Howtoknow">How to Know:</label>
+            <label for="Howtoknow">如何知道補習班:</label>
             <input type="text" class="form-control" name="Howtoknow" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Register Student</button>
+        <button type="submit" class="btn btn-primary">註冊</button>
     </form>
 </div>
 @endsection

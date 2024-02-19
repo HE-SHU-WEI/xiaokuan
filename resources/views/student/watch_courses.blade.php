@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Watch Courses</h2>
+    <h2>觀看課程</h2>
 
     @if(count($watchCourses) > 0)
         <table class="table">
@@ -27,8 +27,8 @@
             </tbody>
         </table>
     @else
-        <p>No courses available for watching.</p>
+        <p>您沒有購買任何課程</p>
     @endif
 
-    <a href="{{ route('student.index') }}" class="btn btn-primary">Back to Dashboard</a>
+    <a href="{{ route('student.index') }}" class="btn btn-primary">回前頁</a>
 @endsection

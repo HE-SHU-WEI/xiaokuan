@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>课程列表</h2>
+    <h2>課程列表</h2>
 
     <ul>
         @foreach ($classnames as $className)
             <li>
                 <strong>{{ $className }}</strong>
-                <a href="{{ route('editClassView', ['classname' => $className]) }}">编辑</a>
+                <a href="{{ route('editClassView', ['classname' => $className]) }}">編輯</a>
             </li>
         @endforeach
     </ul>

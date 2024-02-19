@@ -12,5 +12,6 @@
         <li><a href="{{ route('studentPurchaseFormView') }}">學生購課</a></li>
 
 
+
     </ul>
 @endsection

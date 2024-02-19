@@ -5,21 +5,19 @@
 @section('content')
     <h2>Edit Teachers</h2>
 
-    {{-- 新增老师的按钮 --}}
-    <a href="{{ route('manager.createTeacherView') }}">Add New Teacher</a>
+    <a href="{{ route('manager.createTeacherView') }}">新增老師</a>
 
-    {{-- 老师列表 --}}
     <ul>
         @foreach ($teachers as $teacher)
             <li>
                 {{ $teacher->name }} - {{ $teacher->account }}
-                {{-- 编辑按钮 --}}
-                <a href="{{ route('manager.editTeacherForm', $teacher->id) }}">Edit</a>
-                {{-- 删除按钮 --}}
+
+                <a href="{{ route('manager.editTeacherForm', $teacher->id) }}">編輯</a>
+
                 <form action="{{ route('manager.deleteTeacher', $teacher->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit">Delete</button>
+                    <button type="submit">刪除</button>
                 </form>
             </li>
         @endforeach

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Students in {{ $classname }}</h2>
+    <h2>{{ $classname }}</h2>
 
     @if (count($students) > 0)
     <ul>
@@ -11,9 +11,9 @@
         @endforeach
     </ul>
     @else
-    <p>No students found for this course.</p>
+    <p>此課程沒有學生</p>
     @endif
 
-    <a href="{{ route('teacher.index', ['id' => Auth::id()]) }}" class="btn btn-primary">Back to Courses</a>
+    <a href="{{ route('teacher.index', ['id' => Auth::id()]) }}" class="btn btn-primary">回前頁</a>
 </div>
 @endsection

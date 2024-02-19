@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Filtered Class List</h2>
+    <h2>課程列表</h2>
     <!-- 登出按鈕 -->
     <form method="post" action="{{ route('logout') }}">
         @csrf
@@ -17,7 +17,7 @@
                 {{ $classType }}
             </label>
         @endforeach
-        <button type="submit">Filter</button>
+        <button type="submit">選擇</button>
     </form>
 
     <hr>
@@ -28,13 +28,13 @@
             <a href="{{ route('showClass', ['id' => $class->id]) }}">
                 <img src="{{ asset('storage/' . $class->photo) }}" alt="Class Photo">
             </a>
-            <p>Class Name: {{ $class->classname }}</p>
-            <p>Teacher Name: {{ $class->teachername }}</p>
-            <p>Money: {{ $class->money }}</p>
+            <p>課程名稱 : {{ $class->classname }}</p>
+            <p>教師 : {{ $class->teachername }}</p>
+            <p>價格 : {{ $class->money }}</p>
             <hr>
         </div>
     @empty
-        <p>No classes found.</p>
+        <p>無課程</p>
     @endforelse
 
 

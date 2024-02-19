@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Teacher Dashboard</h2>
+    <h2>課程列表</h2>
 
     <!-- 显示课程列表 -->
     <ul>

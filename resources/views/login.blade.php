@@ -3,14 +3,14 @@
 <form method="post" action="{{ route('login') }}">
     @csrf
 
-    <label for="account">Account:</label>
+    <label for="account">帳號:</label>
     <!-- 如果 Session 中存在 remembered_account，將其預填入表單 -->
     <input type="text" name="account" id="account" value="{{ old('account', $rememberedAccount ?? '') }}" required>
 
-    <label for="password">Password:</label>
+    <label for="password">密碼:</label>
     <input type="password" name="password" id="password" required>
 
-    <button type="submit">Login</button>
+    <button type="submit">登入</button>
 </form>
 
 @if(session('error'))
