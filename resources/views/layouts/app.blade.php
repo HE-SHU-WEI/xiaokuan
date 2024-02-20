@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Laravel App</title>
+    <title>莊小寬數學</title>
 </head>
 <body>
 

@@ -4,13 +4,13 @@
     <div>
         <h2>{{ $class->classname }}</h2>
         <img src="{{ asset('storage/' . $class->photo) }}" alt="Class Photo">
-        <p>Class Name: {{ $class->classname }}</p>
-        <p>Teacher Name: {{ $class->teachername }}</p>
-        <p>Money: {{ $class->money }}</p>
-        <p>Video Time: {{ $class->videotime }}</p>
-        <p>Introduction: {{ $class->introduction }}</p>
-        <p>For Who: {{ $class->forwho }}</p>
-        <p>Know: {{ $class->know }}</p>
+        <p>課程名稱: {{ $class->classname }}</p>
+        <p>老師: {{ $class->teachername }}</p>
+        <p>價格: {{ $class->money }}</p>
+        <p>課程時長: {{ $class->videotime }}</p>
+        <p>介紹: {{ $class->introduction }}</p>
+        <p>對象: {{ $class->forwho }}</p>
+        <p>須知: {{ $class->know }}</p>
 
         @if(session()->has('remembered_account'))
             <!-- 如果 Session 中有填入 remembered_account，顯示加入購物車按鈕 -->

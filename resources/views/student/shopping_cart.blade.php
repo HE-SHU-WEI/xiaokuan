@@ -30,8 +30,8 @@
             </tbody>
         </table>
     @else
-        <p>Your shopping cart is empty.</p>
+        <p>您的購物車是空的</p>
     @endif
 
-    <a href="{{ route('student.index') }}" class="btn btn-primary">Back to Dashboard</a>
+    <a href="{{ route('student.index') }}" class="btn btn-primary">回前頁</a>
 @endsection
