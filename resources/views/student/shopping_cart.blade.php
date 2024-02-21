@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Shopping Cart</h2>
+    <h2>購物車</h2>
 
     @if(count($cartItems) > 0)
         <table class="table">
@@ -24,7 +24,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">&nbsp;</td> <!-- 空行 -->
+                        <td colspan="3">&nbsp;</td>
                     </tr>
                 @endforeach
             </tbody>
