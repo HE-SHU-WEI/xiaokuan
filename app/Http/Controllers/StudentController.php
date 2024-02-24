@@ -120,21 +120,21 @@ class StudentController extends Controller
     //----------------------------------------------------------------
     //
 
-    public function showWatchVideo($classname)
-{
-    // 查詢 classlist 資訊
-    $classInfo = DB::table('classlist')
-        ->where('classname', $classname)
-        ->first();
+//     public function showWatchVideo($classname)
+// {
+//     // 查詢 classlist 資訊
+//     $classInfo = DB::table('classlist')
+//         ->where('classname', $classname)
+//         ->first();
 
-    if ($classInfo) {
-        $link = $classInfo->link;
-        return view('student.watch_video', compact('link'));
-    } else {
-        // 若找不到相應課程，可進行處理或重新導向
-        return redirect()->route('student.index')->with('error', '課程資訊不存在');
-    }
-}
+//     if ($classInfo) {
+//         $link = $classInfo->link;
+//         return view('student.watch_video', compact('link'));
+//     } else {
+//         // 若找不到相應課程，可進行處理或重新導向
+//         return redirect()->route('student.index')->with('error', '課程資訊不存在');
+//     }
+// }
 
 
 
@@ -172,6 +172,81 @@ public function purchase(Request $request)
         return redirect()->route('login.form')->with('error', 'Student data not found');
     }
 }
+
+
+public function showWatchVideo($classname)
+    {
+        // 查询 classlist 信息
+        $classInfo = DB::table('classlist')
+            ->where('classname', $classname)
+            ->first();
+
+        if ($classInfo) {
+            $link = $classInfo->link;
+            $classname = $classInfo->classname;
+
+            return view('student.watch_video', compact('link', 'classname'));
+        } else {
+            // 若找不到相应课程，可进行处理或重新导向
+            return redirect()->route('student.index')->with('error', '课程信息不存在');
+        }
+    }
+
+    private function formatTime($seconds) {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $remainingSeconds = $seconds % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds);
+    }
+
+
+
+    public function updateWatchTime(Request $request)
+    {
+        // 获取当前课程的classname
+        $classname = $request->input('classname');
+        // $classname = '大一微積分';
+
+        // 获取观看时间（以秒为单位），确保为正整数
+        $watchTimeSeconds = abs((int)$request->input('watchTime'));
+
+        // 获取当前学生账号
+        $studentAccount = Session::get('remembered_account');
+        $studentTableName = $studentAccount;
+
+        // 查询当前课程的观看时间信息（以秒为单位）
+        $currentWatchTimeSeconds = (int)DB::table($studentTableName)
+            ->where('classname', $classname)
+            ->value('watchtime');
+
+        if ($currentWatchTimeSeconds !== null) {
+            // 计算更新后的观看时间（以秒为单位）
+            $updatedWatchTimeSeconds = $currentWatchTimeSeconds + $watchTimeSeconds;
+
+            // 将最终观看时间转换为 HH:MM:SS 格式
+            $finalWatchTimeFormatted = $this->formatTime($updatedWatchTimeSeconds);
+
+            // 更新数据库中的观看时间信息
+            DB::table($studentTableName)
+                ->where('classname', $classname)
+                ->update(['watchtime' => $updatedWatchTimeSeconds]);
+
+            return response()->json([
+                'success' => true,
+                'message' => '观看时间更新成功',
+                'watchTime' => $finalWatchTimeFormatted,
+                'classname' => $classname,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => '未找到课程观看信息',
+                'watchTime' => null,
+                'classname' => $classname,
+            ]);
+        }
+    }
 
 
 

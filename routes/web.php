@@ -106,6 +106,8 @@ Route::get('/watch-courses', [StudentController::class,'showWatchCourses'])->nam
 Route::get('/watch-video/{classname}', [StudentController::class,'showWatchVideo'])->name('watch.video');
 Route::post('/purchase', [StudentController::class,'purchase'])->name('purchase');
 
+Route::post('/update-watchtime', [StudentController::class, 'updateWatchTime'])->name('update.watchtime');
+
 /*login*/
 
 use App\Http\Controllers\LoginController;
