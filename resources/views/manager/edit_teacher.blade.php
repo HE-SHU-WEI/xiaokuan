@@ -3,7 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Edit Teachers</h2>
+    <h2>編輯老師資訊</h2>
 
     <a href="{{ route('manager.createTeacherView') }}">新增老師</a>
 

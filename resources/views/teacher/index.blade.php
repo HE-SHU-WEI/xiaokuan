@@ -4,7 +4,6 @@
 <div class="container">
     <h2>課程列表</h2>
 
-    <!-- 显示课程列表 -->
     <ul>
         @foreach ($courses as $course)
             <li>
