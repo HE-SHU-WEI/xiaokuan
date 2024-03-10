@@ -108,6 +108,10 @@ Route::post('/purchase', [StudentController::class,'purchase'])->name('purchase'
 
 Route::post('/update-watchtime', [StudentController::class, 'updateWatchTime'])->name('update.watchtime');
 
+Route::post('/progress', [StudentController::class, 'progress'])->name('progress');
+
+
+
 /*login*/
 
 use App\Http\Controllers\LoginController;

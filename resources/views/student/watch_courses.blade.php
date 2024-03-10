@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>觀看課程</h2>
+    <h2>观看课程</h2>
 
     @if(count($watchCourses) > 0)
         <table class="table">
@@ -18,6 +18,12 @@
                                 <a href="{{ route('watch.video', ['classname' => $course['classname']]) }}" target="_self">
                                     {{ $course['classname'] }}
                                 </a>
+                                <!-- 显示观看进度和时间信息 -->
+                                <div class="progress">
+                                    <p>观看进度：{{ $course['progressPercentage'] ?? '0' }}%</p>
+                                </div>
+                                <p>观看时间：{{ $course['watchtime'] ?? '00:00:00' }}</p>
+                                <p>视频总时长：{{ $course['videotime'] ?? '00:00:00' }}</p>
                             </div>
                         </td>
                     </tr>
@@ -25,35 +31,8 @@
             </tbody>
         </table>
     @else
-        <p>您沒有購買任何課程</p>
+        <p>您没有购买任何课程</p>
     @endif
 
-    <a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前頁</a>
-
-    <script>
-        // 检查 URL 中是否包含参数
-        var urlParams = new URLSearchParams(window.location.search);
-        var updateSuccess = urlParams.get('updateSuccess');
-
-        // 如果 URL 中包含更新成功的参数，则显示提示框
-        if (updateSuccess === 'true') {
-            window.prompt("观看时间已更新");
-        } else if (updateSuccess === 'false') {
-            window.prompt("更新失败");
-        }
-
-        // 页面加载完成后执行
-        window.onload = function() {
-            // 获取回前页的按钮
-            var backButton = document.getElementById('backButton');
-
-            // 为回前页的按钮添加点击事件监听器
-            backButton.addEventListener('click', function(event) {
-                // 点击按钮时，向 URL 添加参数，表示更新成功或失败
-                var updatedUrl = "{{ route('student.index') }}" + "?updateSuccess=" + updateSuccess;
-                // 重定向到更新成功的 URL
-                window.location.href = updatedUrl;
-            });
-        };
-    </script>
+    <a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前页</a>
 @endsection

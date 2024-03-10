@@ -79,43 +79,53 @@ class StudentController extends Controller
 
 //----------------------------------------------------------------
 //看課程
-    public function showWatchCourses()
-    {
-        // 獲取目前登入學生的專屬資料表名稱
-        $rememberedAccount = session('remembered_account');
-        $student = $rememberedAccount;
+public function showWatchCourses()
+{
+    // 獲取目前登入學生的專屬資料表名稱
+    $rememberedAccount = session('remembered_account');
+    $student = $rememberedAccount;
 
-        if ($student) {
-            // 使用 $student->remembered_account 或其他相關的字段來獲取專屬資料表名稱
-            $studentTableName = $student;
+    if ($student) {
+        // 使用 $student->remembered_account 或其他相關的字段來獲取專屬資料表名稱
+        $studentTableName = $student;
 
-            // 查詢 classbuy 是 "BUY" 的所有課程
-            $watchCourses = DB::table($studentTableName)
-                ->where('classbuy', 'BUY')
-                ->get();
+        // 查詢 classbuy 是 "BUY" 的所有課程
+        $watchCourses = DB::table($studentTableName)
+            ->where('classbuy', 'BUY')
+            ->get();
 
-            // 透過 classname 查詢 classlist 資訊
-            $courseDetails = [];
-            foreach ($watchCourses as $course) {
-                $classInfo = DB::table('classlist')
+        // 透過 classname 查詢 classlist 資訊
+        $courseDetails = [];
+        foreach ($watchCourses as $course) {
+            $classInfo = DB::table('classlist')
+                ->where('classname', $course->classname)
+                ->first();
+
+            if ($classInfo) {
+                $videotime = DB::table($rememberedAccount)
                     ->where('classname', $course->classname)
-                    ->first();
+                    ->value('videotime');
 
-                if ($classInfo) {
-                    $courseDetails[] = [
-                        'photo' => $classInfo->photo,
-                        'classname' => $classInfo->classname,
-                        // 可以添加其他你需要的資訊
-                    ];
-                }
+                $watchtime = DB::table($rememberedAccount)
+                    ->where('classname', $course->classname)
+                    ->value('watchtime');
+
+                $courseDetails[] = [
+                    'photo' => $classInfo->photo,
+                    'classname' => $classInfo->classname,
+                    'videotime' => $videotime,
+                    'watchtime' => $watchtime,
+                ];
             }
-
-            // 傳遞資訊到視圖
-            return view('student.watch_courses', compact('watchCourses', 'courseDetails'));
-        } else {
-            return redirect()->route('login.form')->with('error', '學生資料不存在');
         }
+
+        // 傳遞資訊到視圖
+        return view('student.watch_courses', compact('watchCourses', 'courseDetails'));
+    } else {
+        return redirect()->route('login.form')->with('error', '學生資料不存在');
     }
+}
+
 
     //----------------------------------------------------------------
     //
@@ -158,14 +168,14 @@ public function purchase(Request $request)
             Mail::to($student->pargmail)->send(new PurchaseConfirmation());
         }
 
-        // 更新学生的购买状态为 "BUY"
-        $studentTableName = $studentAccount;
-        $classname = $request->input('classname');
+        // // 更新学生的购买状态为 "BUY"
+        // $studentTableName = $studentAccount;
+        // $classname = $request->input('classname');
 
-        // 更新数据库中的classbuy列为"BUY"
-        DB::table($studentTableName)
-            ->where('classname', $classname)
-            ->update(['classbuy' => 'BUY']);
+        // // 更新数据库中的classbuy列为"BUY"
+        // DB::table($studentTableName)
+        //     ->where('classname', $classname)
+        //     ->update(['classbuy' => 'BUY']);
 
         return redirect()->route('student.index')->with('success', 'Purchase successful, emails sent');
     } else {
@@ -206,7 +216,6 @@ public function showWatchVideo($classname)
     {
         // 获取当前课程的classname
         $classname = $request->input('classname');
-        // $classname = '大一微積分';
 
         // 获取观看时间（以秒为单位），确保为正整数
         $watchTimeSeconds = abs((int)$request->input('watchTime'));
@@ -234,14 +243,14 @@ public function showWatchVideo($classname)
 
             return response()->json([
                 'success' => true,
-                'message' => '观看时间更新成功',
+                'message' => '觀看時間更新成功',
                 'watchTime' => $finalWatchTimeFormatted,
                 'classname' => $classname,
             ]);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => '未找到课程观看信息',
+                'message' => '未找到課程資訊',
                 'watchTime' => null,
                 'classname' => $classname,
             ]);
@@ -249,6 +258,42 @@ public function showWatchVideo($classname)
     }
 
 
+    public function progress(Request $request)
+    {
+        // 获取当前课程的classname
+        $classname = $request->input('classname');
+
+        // 获取当前学生账号
+        $studentAccount = Session::get('remembered_account');
+        $studentTableName = $studentAccount;
+
+        // 查询当前课程的观看时间信息（以秒为单位）
+        $watchTimeSeconds = (int)DB::table($studentTableName)
+            ->where('classname', $classname)
+            ->value('watchtime');
+
+        // 查询当前课程的视频总时长（以秒为单位）
+        $videoTimeSeconds = (int)DB::table('classlist')
+            ->where('classname', $classname)
+            ->value('videotime');
+
+        if ($watchTimeSeconds !== null && $videoTimeSeconds !== null && $videoTimeSeconds > 0) {
+            // 计算观看进度百分比
+            $progressPercentage = floor(($watchTimeSeconds / $videoTimeSeconds) * 100);
+
+            // 格式化观看时间和视频总时长
+            $watchTimeFormatted = $this->formatTime($watchTimeSeconds);
+            $videoTimeFormatted = $this->formatTime($videoTimeSeconds);
+
+            return view('student.watch_courses', [
+                'progressPercentage' => $progressPercentage,
+                'watchTimeFormatted' => $watchTimeFormatted,
+                'videoTimeFormatted' => $videoTimeFormatted,
+                'classname' => $classname,
+            ]);
+
+        }
+    }
 
 
 

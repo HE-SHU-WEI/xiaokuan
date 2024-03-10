@@ -42,11 +42,35 @@
             classnameInput.value = classname;
 
             // 为回前页的按钮添加点击事件监听器
-            backButton.addEventListener('click', function(event) {
-                // 将观看时间和课程名称发送到后端
-                watchTimeInput.value = watchTime;
-                updateWatchTimeBtn.click();
-            });
+            // 为回前页的按钮添加点击事件监听器
+backButton.addEventListener('click', function(event) {
+    // 阻止默认行为，即不执行页面重定向
+    event.preventDefault();
+
+    // 将观看时间和课程名称发送到后端
+    watchTimeInput.value = watchTime;
+
+    // 使用 AJAX 请求发送数据到后端
+    fetch("{{ route('update.watchtime') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+            watchTime: watchTime,
+            classname: classname
+        })
+    })
+    .then(response => {
+        // 请求成功后执行页面重定向
+        window.location.href = "{{ route('watch.courses') }}";
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
         };
     </script>
 @endsection
