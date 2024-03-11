@@ -102,19 +102,33 @@ public function showWatchCourses()
                 ->first();
 
             if ($classInfo) {
-                $videotime = DB::table($rememberedAccount)
+                $videotime = intval(DB::table($rememberedAccount)
                     ->where('classname', $course->classname)
-                    ->value('videotime');
+                    ->value('videotime'));
 
-                $watchtime = DB::table($rememberedAccount)
+                $watchtime = intval(DB::table($rememberedAccount)
                     ->where('classname', $course->classname)
-                    ->value('watchtime');
+                    ->value('watchtime'));
+
+                // 确保 $videotime 和 $watchtime 是整数类型，并避免除以零错误
+                if ($videotime > 0) {
+                    // 计算观看进度百分比
+                    $progressPercentage = ($watchtime / $videotime) * 100;
+                } else {
+                    // 视频总时长为零，设置进度百分比为零
+                    $progressPercentage = 0;
+                }
+
+                $watchTimeFormatted = $this->formatTime($watchtime);
+                $videoTimeFormatted = $this->formatTime($videotime);
 
                 $courseDetails[] = [
                     'photo' => $classInfo->photo,
                     'classname' => $classInfo->classname,
-                    'videotime' => $videotime,
-                    'watchtime' => $watchtime,
+                    'videotime' => $videoTimeFormatted, // 添加 videotime 到 $courseDetails 数组中的每个 $course 元素中
+                    'watchtime' => $watchTimeFormatted, // 添加 watchtime 到 $courseDetails 数组中的每个 $course 元素中
+                    'progressPercentage' => $progressPercentage, // 添加 progressPercentage 到 $courseDetails 数组中的每个 $course 元素中
+                    // 可以添加其他你需要的資訊
                 ];
             }
         }
