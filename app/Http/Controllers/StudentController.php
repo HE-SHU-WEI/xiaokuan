@@ -131,7 +131,7 @@ public function showWatchCourses()
             }
         }
 
-        // 傳遞資訊到視圖
+
         return view('student.watch_courses', compact('watchCourses', 'courseDetails'));
     } else {
         return redirect()->route('login.form')->with('error', '學生資料不存在');
@@ -180,11 +180,11 @@ public function purchase(Request $request)
             Mail::to($student->pargmail)->send(new PurchaseConfirmation());
         }
 
-        // // 更新学生的购买状态为 "BUY"
+        // // 更新購買狀態 "BUY"
         // $studentTableName = $studentAccount;
         // $classname = $request->input('classname');
 
-        // // 更新数据库中的classbuy列为"BUY"
+        // // "BUY"
         // DB::table($studentTableName)
         //     ->where('classname', $classname)
         //     ->update(['classbuy' => 'BUY']);
@@ -198,7 +198,7 @@ public function purchase(Request $request)
 
 public function showWatchVideo($classname)
     {
-        // 查询 classlist 信息
+        // 查询 classlist
         $classInfo = DB::table('classlist')
             ->where('classname', $classname)
             ->first();
@@ -228,31 +228,31 @@ public function showWatchVideo($classname)
     {
         $classname = $request->input('classname');
 
-        // 获取观看时间（以秒为单位）
+
         $watchTimeSeconds = abs((int)$request->input('watchTime'));
 
-        // 获取当前学生账号
+
         $studentAccount = Session::get('remembered_account');
         $studentTableName = $studentAccount;
 
-        // 查询当前课程的观看时间信息（以秒为单位）
+
         $currentWatchTime = DB::table($studentTableName)
             ->where('classname', $classname)
             ->value('watchtime');
 
-        // 确保成功获取到当前观看时间
+
         if ($currentWatchTime !== null) {
-            // 计算当前观看时间的秒数
+
             list($hours, $minutes, $seconds) = sscanf($currentWatchTime, "%d:%d:%d");
             $currentWatchTimeSeconds = $hours * 3600 + $minutes * 60 + $seconds;
 
-            // 计算更新后的观看时间（以秒为单位）
+
             $updatedWatchTimeSeconds = $currentWatchTimeSeconds + $watchTimeSeconds;
 
-            // 将最终观看时间转换为 HH:MM:SS 格式
+            //  HH:MM:SS 格式
             $finalWatchTimeFormatted = $this->formatTime($updatedWatchTimeSeconds);
 
-            // 更新数据库中的观看时间信息
+            // 更新
             DB::table($studentTableName)
                 ->where('classname', $classname)
                 ->update(['watchtime' => $finalWatchTimeFormatted]);

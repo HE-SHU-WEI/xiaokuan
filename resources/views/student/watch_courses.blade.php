@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>观看课程</h2>
+    <h2>課程列表</h2>
 
     @if(count($watchCourses) > 0)
         <table class="table">
@@ -20,10 +20,10 @@
                                 </a>
                                 <!-- 显示观看进度和时间信息 -->
                                 <div class="progress">
-                                    <p>观看进度：{{ $course['progressPercentage'] ?? '0' }}%</p>
+                                    <p>課程進度：{{ $course['progressPercentage'] ?? '0' }}%</p>
                                 </div>
-                                <p>观看时间：{{ $course['watchtime'] ?? '00:00:00' }}</p>
-                                <p>视频总时长：{{ $course['videotime'] ?? '00:00:00' }}</p>
+                                {{-- <p>目前觀看時間：{{ $course['watchtime'] ?? '00:00:00' }}</p>
+                                <p>課程總時長：{{ $course['videotime'] ?? '00:00:00' }}</p> --}}
 
 
                             </div>
@@ -33,8 +33,8 @@
             </tbody>
         </table>
     @else
-        <p>您没有购买任何课程</p>
+        <p>您沒有購買任何課程</p>
     @endif
 
-    <a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前页</a>
+    <a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前頁</a>
 @endsection
