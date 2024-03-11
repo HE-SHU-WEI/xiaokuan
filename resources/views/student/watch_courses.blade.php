@@ -24,6 +24,8 @@
                                 </div>
                                 <p>观看时间：{{ $course['watchtime'] ?? '00:00:00' }}</p>
                                 <p>视频总时长：{{ $course['videotime'] ?? '00:00:00' }}</p>
+
+
                             </div>
                         </td>
                     </tr>
