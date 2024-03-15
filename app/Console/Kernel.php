@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('courses:delete-expired-student-tables')->daily(); // 每天執行一次
     }
 
     /**

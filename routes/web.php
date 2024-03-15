@@ -80,7 +80,7 @@ Route::prefix('manager')->group(function () {
 
 // 處理新增購課記錄的請求
 
-Route::get('/student-purchase-form', [ManagerController::class, 'studentPurchaseFormView'])
+    Route::get('/student-purchase-form', [ManagerController::class, 'studentPurchaseFormView'])
         ->name('studentPurchaseFormView');
     Route::post('/store-student-purchase', [ManagerController::class, 'storeStudentPurchase'])
         ->name('storeStudentPurchase');
@@ -88,6 +88,14 @@ Route::get('/student-purchase-form', [ManagerController::class, 'studentPurchase
 
 
 
+        //-------------------------------------寄信
+        Route::get('/manager/edit-email-content', [ManagerController::class,'editEmailContentView'])->name('editEmailContentView');
+        Route::post('/manager/save-email-content', [ManagerController::class,'saveEmailContent'])->name('saveEmailContent');
+
+
+
+        Route::get('/edit-email-content', 'ManagerController@editEmailContentView')->name('editEmailContentView');
+        Route::post('/update-email-content', 'ManagerController@updateEmailContent')->name('updateEmailContent');
 
 
 

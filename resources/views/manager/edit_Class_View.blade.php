@@ -28,7 +28,7 @@
             </div>
 
             <div class="form-group">
-                <label for="know">要先知道</label>
+                <label for="know">須知</label>
                 <textarea class="form-control" id="know" name="know" rows="4" required>{{ $class->know }}</textarea>
             </div>
 
@@ -39,13 +39,21 @@
 
             <div class="form-group">
                 <label for="photo">照片</label>
-                <input type="file" class="form-control-file" id="photo" name="photo">
+                <input type="file" class="form-control-file" id="photo" name="photo">{{ $class->photo }}
             </div>
 
             <div class="form-group">
-                <label for="money">價格</label>
-                <input type="number" class="form-control" id="money" name="money" value="{{ $class->money }}" required>
+                <label for="discountlink">價格</label>
+                <textarea class="form-control" id="money" name="money"  required>{{ $class->money }}</textarea>
             </div>
+
+
+            <div class="form-group">
+                <label for="discountlink">折扣出售</label>
+                <textarea class="form-control" id="discountlink" name="discountlink" rows="4" required>{{ $class->discountlink }}</textarea>
+            </div>
+
+
 
 
             <button type="submit" class="btn btn-primary">更新資料</button>

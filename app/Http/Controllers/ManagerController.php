@@ -19,6 +19,9 @@ use App\Mail\StudentRegistrationMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Carbon;
+use App\Models\EmailContent;
+
+
 
 
 class ManagerController extends Controller
@@ -52,14 +55,14 @@ class ManagerController extends Controller
             'entry' => 'nullable|date',
         ]);
 
-        // 处理新增老師图片上传
+
         $photoPath =  $request->file('photo')->getClientOriginalName();
         $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
 
 
 
 
-        // 创建新的老师记录
+        // 創建老師
         Userlist::create([
             'name' => $request->name,
             'account' => $request->account,
@@ -75,7 +78,7 @@ class ManagerController extends Controller
 
     public function editTeacherForm($teacherId)
     {
-        // 通过 ID 查找老师
+
         $teacher = Userlist::findOrFail($teacherId);
 
 
@@ -94,7 +97,7 @@ class ManagerController extends Controller
             'entry' => 'nullable|date',
         ]);
 
-        // 通过 ID 查找老师
+        // 找老師ID
         $teacher = Userlist::findOrFail($teacherId);
 
         // 更新紀錄
@@ -104,11 +107,11 @@ class ManagerController extends Controller
         $teacher->background = $request->background;
 
         $photoPath = null;
-        // 处理更新老師图片上传
+
         if ($photoPath){
         $photoPath = 'photos/' . $request->file('photo')->getClientOriginalName();
 
-        // 将文件上传到 public/storage/photos 目录
+
         $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
         $teacher->photo = $photoPath;
         }
@@ -116,7 +119,7 @@ class ManagerController extends Controller
         $teacher->entry = $request->entry;
         $teacher->save();
 
-        return redirect()->route('editTeacherView')->with('success', 'Teacher updated successfully');
+        return redirect()->route('editTeacherView')->with('success', '老師資料已更新');
     }
 
     public function deleteTeacher($teacherId)
@@ -124,7 +127,7 @@ class ManagerController extends Controller
         $teacher = Userlist::findOrFail($teacherId);
         $teacher->delete();
 
-        return back()->with('success', 'Teacher deleted successfully');
+        return back()->with('success', '老師資料已刪除');
     }
 
 // ----------------------------------------------------------------
@@ -135,13 +138,13 @@ class ManagerController extends Controller
 
 public function editManagerView()
     {
-        // 假设管理员ID是已知的，这里我们用id为1作为示例
+
         $manager = Managerlist::findOrFail(1);
 
         return view('manager.edit_manager', compact('manager'));
     }
 
-    // 更新管理员信息
+    // 更新管理員
     public function updateManager(Request $request)
     {
         $manager = Managerlist::findOrFail(1);
@@ -155,7 +158,7 @@ public function editManagerView()
         $manager->update([
             'name' => $request->name,
             'account' => $request->account,
-            'password' => $request->password, // 考虑使用 Hash::make($request->password)
+            'password' => $request->password,
         ]);
 
         return redirect()->back()->with('success', 'Account updated successfully.');
@@ -166,20 +169,16 @@ public function editManagerView()
 
 //----------------------------------------------------------------
 
-
-
-
-
-// 显示学生注册页面
+//學生註冊
 public function registerStudentView()
 {
-    // 这里返回一个用于注册学生的表单视图
+
     return view('manager.register_student');
 }
 
 public function registerStudent(Request $request)
 {
-    // 验证请求数据
+
     $request->validate([
         'password' => 'required|string',
         'name' => 'required|string',
@@ -195,15 +194,15 @@ public function registerStudent(Request $request)
         'Howtoknow' => 'required|string',
     ]);
 
-    // 自动生成学生账号
+    // 生成學號
     $latestStudent = Stulist::latest('id')->first();
     $nextId = $latestStudent ? intval(substr($latestStudent->account, 3)) + 1 : 1;
     $account = 'STU' . str_pad($nextId, 7, '0', STR_PAD_LEFT);
 
-    // 创建新的学生记录
+    // 學生註冊
     $student = Stulist::create([
         'account' => $account,
-        'password' => $request->password, // 考虑加密
+        'password' => $request->password,
         'name' => $request->name,
         'school' => $request->school,
         'grade' => $request->grade,
@@ -217,15 +216,16 @@ public function registerStudent(Request $request)
         'Howtoknow' => $request->Howtoknow,
     ]);
 
-    // 为学生创建课程信息表
+    // 創建學生個人資料表
     $this->createStudentCourseTable($account);
 
     Mail::to($request->input('gmail'))->send(new StudentRegistrationMail($student));
     Mail::to($request->input('pargmail'))->send(new StudentRegistrationMail($student));
 
-    return back()->with('success', 'Student registered successfully');
+    return back()->with('success', '學生註冊成功');
 }
 
+//創學生資料表
 protected function createStudentCourseTable($account)
 {
     $tableName = $account;
@@ -274,12 +274,16 @@ protected function createStudentCourseTable($account)
     }
 
 
+
+
+
+//-----------------------------------------------------------------------------
  // 編輯特定 classname 的頁面
  public function editClassView($classname)
  {
      $class = Classlist::where('classname', $classname)->first();
      if (!$class) {
-         return redirect()->route('coursesView')->with('error', 'Class not found');
+         return redirect()->route('coursesView')->with('error', '沒有此課程');
      }
      return view('manager.edit_class_view', ['class' => $class]);
  }
@@ -290,7 +294,7 @@ protected function createStudentCourseTable($account)
      $class = Classlist::find($id);
 
      if (!$class) {
-         return redirect()->route('coursesView')->with('error', 'Class not found');
+         return redirect()->route('coursesView')->with('error', '沒有此課程');
      }
 
      // 處理表單數據，更新 classname 的相關信息
@@ -301,8 +305,9 @@ protected function createStudentCourseTable($account)
      $class->know = $request->input('know');
      $class->forwho = $request->input('forwho');
      $class->money = $request->input('money');
+     $class->discountlink = $request->input('discountlink');
 
-     // 如果提供了新文件，處理並上傳照片
+
      if ($request->hasFile('photo')) {
          $photoPath = $request->file('photo')->store('photos', 'public');
          $class->photo = $photoPath;
@@ -311,91 +316,85 @@ protected function createStudentCourseTable($account)
      // 儲存更新的 classname 資料
      $class->save();
 
-     return redirect()->route('coursesView')->with('success', 'Class updated successfully');
+     return redirect()->route('coursesView')->with('success', '課程更新完成');
  }
 
 
 // ----------------------------------------------------------------
 
-
-
-
+//創建課程
 public function createCourse()
-    {
-        return view('manager.upload_course');
+{
+    return view('manager.upload_course');
+}
+
+
+
+public function storeCourse(Request $request)
+{
+
+    $validatedData = $request->validate([
+        'classname' => 'required|string',
+        'classtype' => 'required|string',
+        'link' => 'required|url',
+        'videotime' => 'required|string',
+        'teachername' => 'required|string',
+        'introduction' => 'required|string',
+        'photo' => 'nullable|image',
+        'know' => 'required|string',
+        'forwho' => 'required|string',
+        'money' => 'required|numeric',
+        'discountlink' => 'nullable|string'
+    ]);
+
+    // 找老師ID
+    $teacher = Userlist::where('name', $request->input('teachername'))->first();
+    if (!$teacher) {
+        Log::error('Teacher not found: ' . $request->input('teachername'));
+        return back()->withErrors(['teachername' => 'Teacher not found'])->withInput();
     }
 
-    // 处理课程上传表单提交
-    public function storeCourse(Request $request)
-    {
-        // 验证请求数据
-        $validatedData = $request->validate([
-            'classname' => 'required|string|max:255',
-            'classtype' => 'required|string|max:255',
-            'link' => 'required|url',
-            'videotime' => 'required|string|max:10',
-            'teachername' => 'required|string|max:255',
-            'introduction' => 'required|string',
-            'photo' => 'nullable|image',
-            'know' => 'required|string|max:255',
-            'forwho' => 'required|string|max:255',
-            'money' => 'required|numeric',
-        ]);
-
-        // 查找教师ID
-        $teacher = Userlist::where('name', $request->input('teachername'))->first();
-        if (!$teacher) {
-            Log::error('Teacher not found: ' . $request->input('teachername'));
-            return back()->withErrors(['teachername' => 'Teacher not found'])->withInput();
-        }
-
-
-
-        // 处理图片上传
-        $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;
-        if ($photoPath) {
-            // 将文件上传到 public/storage/photos 目录
-            $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
-        }
-
-
-
-        // 创建并保存课程信息
-        Classlist::create([
-            'classname' => $validatedData['classname'],
-            'classtype' => $validatedData['classtype'],
-            'link' => $validatedData['link'],
-            'teacherid' => $teacher->id,
-            'teachername' => $validatedData['teachername'],
-            'videotime' => $validatedData['videotime'],
-            'introduction' => $validatedData['introduction'],
-            'photo' => $photoPath,
-            'know' => $validatedData['know'],
-            'forwho' => $validatedData['forwho'],
-            'money' => $validatedData['money'],
-        ]);
-
-// 获取课程名称
-$classname = $validatedData['classname'];
-
-// 创建以课程名称命名的新表
-$this->createCourseTable($classname);
-
-
-        // 重定向到课程列表或其他适当页面
-        return redirect()->route('uploadCourseView')->with('success', 'Course uploaded successfully.');
+    //上傳圖片
+    $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;
+    if ($photoPath) {
+        //上傳圖片
+        $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
     }
 
+    // 創建課程
+    Classlist::create([
+        'classname' => $validatedData['classname'],
+        'classtype' => $validatedData['classtype'],
+        'link' => $validatedData['link'],
+        'teacherid' => $teacher->id,
+        'teachername' => $validatedData['teachername'],
+        'videotime' => $validatedData['videotime'],
+        'introduction' => $validatedData['introduction'],
+        'photo' => $photoPath,
+        'know' => $validatedData['know'],
+        'forwho' => $validatedData['forwho'],
+        'money' => $validatedData['money'],
+        'discountlink' => $validatedData['discountlink'],
+    ]);
 
+
+    $classname = $validatedData['classname'];
+
+
+    $this->createCourseTable($classname);
+
+
+    return redirect()->route('uploadCourseView')->with('success', '上傳完成');
+}
 
 
 
     protected function createCourseTable($classname)
 {
-    // 将课程名称格式化为适合的表名
+
     $tableName =  $classname;
 
-    // 检查表是否已经存在
+
     if (!Schema::hasTable($tableName)) {
         Schema::create($tableName, function (Blueprint $table) {
             $table->id();
@@ -440,26 +439,57 @@ public function storeStudentPurchase(Request $request)
 
     // 驗證學生的資料表是否存在
     if (!Schema::hasTable($studentTableName)) {
-        return back()->withErrors(['student_account' => 'Student table not found']);
+        return back()->withErrors(['student_account' => '這個學生沒有註冊']);
     }
 
     // 在學生的資料表中新增一筆資料，並取得課程的 videotime
     $videotime = $class->videotime;
 
-    DB::table($studentTableName)->insert([
-        'classname' => $request->classname,
-        'classbuy' => 'BUY',
-        'watchtime' => '00:00:00',
-        'classend' => $request->class_expire_date,
-        'videotime' => $videotime,
-    ]);
+    // 檢查課程是否有折扣連結
+    if ($class->discountlink) {
+        // 解析折扣連結中的每個課程名稱
+        $discountedClasses = explode('，', $class->discountlink);
 
-    DB::table($request->classname)->insert([
-        'student_account' => $request->student_account,
-    ]);
+        // 將每個課程名稱添加到學生的資料表中
+        foreach ($discountedClasses as $discountedClass) {
+            DB::table($studentTableName)->insert([
+                'classname' => $discountedClass,
+                'classbuy' => 'BUY',
+                'watchtime' => '00:00:00',
+                'classend' => $request->class_expire_date,
+                'videotime' => $videotime,
+            ]);
 
-    return back()->with('success', 'Student purchase record added successfully.');
+            // 將學生添加到課程名單中
+            DB::table($discountedClass)->insert([
+                'student_account' => $request->student_account,
+            ]);
+        }
+    } else {
+        // 如果沒有折扣連結，則照原本的流程添加課程
+        DB::table($studentTableName)->insert([
+            'classname' => $request->classname,
+            'classbuy' => 'BUY',
+            'watchtime' => '00:00:00',
+            'classend' => $request->class_expire_date,
+            'videotime' => $videotime,
+        ]);
+
+        DB::table($request->classname)->insert([
+            'student_account' => $request->student_account,
+        ]);
+    }
+
+    return back()->with('success', '學生購課成功');
 }
+
+
+
+//------------------------------------------------
+
+// 編輯郵件內容頁面
+
+
 
 
 }

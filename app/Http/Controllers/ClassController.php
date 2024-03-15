@@ -18,7 +18,7 @@ class ClassController extends Controller
         // 獲取所有課程
         $classes = Classlist::all();
 
-        // 定義可選的課程類型，這里使用數組表示
+        // 定義可選的課程類型
         $classTypes = [
             '大一微積分',
             '升高一銜接課程',

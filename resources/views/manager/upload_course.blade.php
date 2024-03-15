@@ -2,17 +2,19 @@
 
 @section('content')
     <div class="container">
-        <h2>更新課程</h2>
+        <h2>上傳課程</h2>
         <form action="{{ route('storeCourse') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
+            <!-- Classname -->
             <div class="form-group">
                 <label for="classname">課程名稱:</label>
                 <input type="text" class="form-control" name="classname" required>
             </div>
 
+            <!-- Classtype -->
             <div class="form-group">
-                <label for="classtype">課程折扣</label>
+                <label for="classtype">課程種類:</label>
                 <input type="text" class="form-control" name="classtype" required>
             </div>
 
@@ -64,7 +66,13 @@
                 <input type="text" class="form-control" name="money" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">更新</button>
+            <!-- Discount Link -->
+            <div class="form-group">
+                <label for="discountlink">折扣連結:</label>
+                <input type="text" class="form-control" name="discountlink">
+            </div>
+
+            <button type="submit" class="btn btn-primary">上傳</button>
         </form>
     </div>
 @endsection
