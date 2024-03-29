@@ -18,7 +18,7 @@ class StudentRegistrationMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.student_registration_empty')
+        return $this->view('emails.student_registration')
                     ->subject('Welcome to Our Platform');
     }
 }

@@ -1,3 +1,5 @@
+<!-- resources/views/manager/index.blade.php -->
+
 @extends('layouts.app')
 
 @section('content')
@@ -10,8 +12,7 @@
         <li><a href="{{ route('coursesView') }}">編輯課程</a></li>
         <li><a href="{{ route('uploadCourseView') }}">上傳課程</a></li>
         <li><a href="{{ route('studentPurchaseFormView') }}">學生購課</a></li>
-
-
-
+        <li><a href="{{ route('editEmailContentView') }}">編輯寄信內容</a></li>
+        <li><a href="{{ route('showStudents') }}">顯示學生列表</a></li>
     </ul>
 @endsection

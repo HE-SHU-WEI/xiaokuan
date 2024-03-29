@@ -97,6 +97,11 @@ Route::prefix('manager')->group(function () {
         Route::get('/edit-email-content', 'ManagerController@editEmailContentView')->name('editEmailContentView');
         Route::post('/update-email-content', 'ManagerController@updateEmailContent')->name('updateEmailContent');
 
+//-----------------------------------學生名單
+
+        Route::get('/show-students', [ManagerController::class,'showStudents'])->name('showStudents');
+        Route::delete('/students/{id}', [ManagerController::class, 'deleteStudent'])->name('deleteStudent');
+        Route::post('/query-student', [ManagerController::class, 'queryStudent'])->name('queryStudent');
 
 
 });

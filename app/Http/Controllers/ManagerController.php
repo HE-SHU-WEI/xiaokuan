@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Carbon;
 use App\Models\EmailContent;
+use App\Exports\StulistExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -488,6 +490,59 @@ public function storeStudentPurchase(Request $request)
 //------------------------------------------------
 
 // 編輯郵件內容頁面
+
+
+//----------------------------------
+//匯出學生名單
+public function showStudents()
+{
+    $students = Stulist::all(); // 获取所有学生数据
+    return view('manager.show_students', compact('students'));
+}
+
+// public function exportStudents()
+// {
+//     return Excel::download(new StulistExport, 'students.xlsx'); // 导出学生数据
+// }
+
+public function deleteStudent($id)
+    {
+        // 找到要刪除的學生
+        $student = Stulist::find($id);
+
+        if (!$student) {
+            return redirect()->back()->with('error', '找不到要刪除的學生');
+        }
+
+        // 刪除學生
+        $student->delete();
+
+        return redirect()->back()->with('success', '學生刪除成功');
+    }
+
+
+    // app\Http\Controllers\ManagerController.php
+
+public function queryStudent(Request $request)
+{
+    $studentAccount = $request->input('student_account');
+
+
+    $studentData = DB::table($studentAccount)->get();
+
+
+    return view('manager.student_info', compact('studentData'));
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
