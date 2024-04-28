@@ -15,7 +15,6 @@ class Classlist extends Model
         'link',
         'videotime',
         'introduction',
-        'know',
         'forwho',
         'photo',
         'money',

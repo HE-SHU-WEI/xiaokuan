@@ -39,14 +39,9 @@
             <!-- Introduction -->
             <div class="form-group">
                 <label for="introduction">介紹:</label>
-                <textarea class="form-control" name="introduction" rows="3" required></textarea>
+                <input type="file" class="form-control-file" name="introduction">
             </div>
 
-            <!-- Knowledge -->
-            <div class="form-group">
-                <label for="know">須知:</label>
-                <input type="text" class="form-control" name="know" required>
-            </div>
 
             <!-- For Who -->
             <div class="form-group">

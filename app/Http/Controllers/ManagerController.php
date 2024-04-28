@@ -290,36 +290,51 @@ protected function createStudentCourseTable($account)
      return view('manager.edit_class_view', ['class' => $class]);
  }
 
-
  public function updateClass(Request $request, $id)
- {
-     $class = Classlist::find($id);
+{
+    $class = Classlist::find($id);
 
-     if (!$class) {
-         return redirect()->route('coursesView')->with('error', '沒有此課程');
-     }
+    if (!$class) {
+        return redirect()->route('coursesView')->with('error', '沒有此課程');
+    }
 
-     // 處理表單數據，更新 classname 的相關信息
-     $class->classname = $request->input('classname');
-     $class->link = $request->input('link');
-     $class->videotime = $request->input('videotime');
-     $class->introduction = $request->input('introduction');
-     $class->know = $request->input('know');
-     $class->forwho = $request->input('forwho');
-     $class->money = $request->input('money');
-     $class->discountlink = $request->input('discountlink');
+    // Validate the request data
+    $validatedData = $request->validate([
+        'classname' => 'required|string',
+        'link' => 'required|url',
+        'videotime' => 'required|string',
+        'forwho' => 'required|string',
+        'money' => 'required|numeric',
+        'discountlink' => 'nullable|string',
+        'photo' => 'nullable|image', // Update validation rules for photo upload
+        'introduction' => 'nullable|image', // Add validation rules for introduction image upload
+    ]);
 
+    // Update class data
+    $class->classname = $validatedData['classname'];
+    $class->link = $validatedData['link'];
+    $class->videotime = $validatedData['videotime'];
+    $class->forwho = $validatedData['forwho'];
+    $class->money = $validatedData['money'];
+    $class->discountlink = $validatedData['discountlink'];
 
-     if ($request->hasFile('photo')) {
-         $photoPath = $request->file('photo')->store('photos', 'public');
-         $class->photo = $photoPath;
-     }
+    // Handle photo upload
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('photos', 'public');
+        $class->photo = $photoPath;
+    }
 
-     // 儲存更新的 classname 資料
-     $class->save();
+    // Handle introduction image upload
+    if ($request->hasFile('introduction')) {
+        $introductionPath = $request->file('introduction')->store('photos', 'public');
+        $class->introduction = $introductionPath;
+    }
 
-     return redirect()->route('coursesView')->with('success', '課程更新完成');
- }
+    // Save the updated class data
+    $class->save();
+
+    return redirect()->route('coursesView')->with('success', '課程更新完成');
+}
 
 
 // ----------------------------------------------------------------
@@ -330,65 +345,60 @@ public function createCourse()
     return view('manager.upload_course');
 }
 
-
-
 public function storeCourse(Request $request)
 {
-
     $validatedData = $request->validate([
         'classname' => 'required|string',
         'classtype' => 'required|string',
         'link' => 'required|url',
         'videotime' => 'required|string',
         'teachername' => 'required|string',
-        'introduction' => 'required|string',
+        'introduction_image' => 'nullable|image',
         'photo' => 'nullable|image',
-        'know' => 'required|string',
         'forwho' => 'required|string',
         'money' => 'required|numeric',
         'discountlink' => 'nullable|string'
     ]);
 
-    // 找老師ID
+    // Find teacher ID
     $teacher = Userlist::where('name', $request->input('teachername'))->first();
     if (!$teacher) {
         Log::error('Teacher not found: ' . $request->input('teachername'));
         return back()->withErrors(['teachername' => 'Teacher not found'])->withInput();
     }
 
-    //上傳圖片
+    // Upload introduction image
+    $introductionImagePath = $request->hasFile('introduction') ? 'photos/' . $request->file('introduction')->getClientOriginalName() : null;
+    if ($introductionImagePath) {
+        $request->file('introduction')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
+    }
+
+    // Upload main photo
     $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;
     if ($photoPath) {
-        //上傳圖片
         $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
     }
 
-    // 創建課程
-    Classlist::create([
-        'classname' => $validatedData['classname'],
-        'classtype' => $validatedData['classtype'],
-        'link' => $validatedData['link'],
-        'teacherid' => $teacher->id,
-        'teachername' => $validatedData['teachername'],
-        'videotime' => $validatedData['videotime'],
-        'introduction' => $validatedData['introduction'],
-        'photo' => $photoPath,
-        'know' => $validatedData['know'],
-        'forwho' => $validatedData['forwho'],
-        'money' => $validatedData['money'],
-        'discountlink' => $validatedData['discountlink'],
-    ]);
+    // Create course
+    $class = new Classlist;
+    $class->classname = $validatedData['classname'];
+    $class->classtype = $validatedData['classtype'];
+    $class->link = $validatedData['link'];
+    $class->teacherid = $teacher->id;
+    $class->teachername = $validatedData['teachername'];
+    $class->videotime = $validatedData['videotime'];
+    $class->forwho = $validatedData['forwho'];
+    $class->money = $validatedData['money'];
+    $class->discountlink = $validatedData['discountlink'];
+    $class->introduction = $introductionImagePath; // Assign introduction image separately
+    $class->photo = $photoPath;
+    $class->save();
 
-
-    $classname = $validatedData['classname'];
-
-
-    $this->createCourseTable($classname);
-
+    // Create course table
+    $this->createCourseTable($validatedData['classname']);
 
     return redirect()->route('uploadCourseView')->with('success', '上傳完成');
 }
-
 
 
     protected function createCourseTable($classname)

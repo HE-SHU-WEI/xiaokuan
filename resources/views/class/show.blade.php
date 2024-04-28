@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div>
         <h2>{{ $class->classname }}</h2>
@@ -8,7 +7,7 @@
         <p>老師: {{ $class->teachername }}</p>
         <p>價格: {{ $class->money }}</p>
         <p>課程時長: {{ $class->videotime }}</p>
-        <p>介紹: {{ $class->introduction }}</p>
+        <img src="{{ asset('storage/' . $class->introduction) }}" alt="Introduction Image">
         <p>對象: {{ $class->forwho }}</p>
         <p>須知: {{ $class->know }}</p>
 

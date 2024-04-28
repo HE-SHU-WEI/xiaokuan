@@ -17,7 +17,6 @@ class CreateClasslistTable extends Migration
             $table->time('videotime');
             $table->text('introduction');
             $table->string('photo');
-            $table->string('know');
             $table->string('forwho');
             $table->string('money');
             $table->string('classname');

@@ -24,13 +24,11 @@
 
             <div class="form-group">
                 <label for="introduction">課程介紹</label>
-                <textarea class="form-control" id="introduction" name="introduction" rows="4" required>{{ $class->introduction }}</textarea>
+                <input type="file" class="form-control-file" id="introduction" name="introduction">
+                <img src="{{ asset('storage/' . $class->introduction) }}" alt="Introduction Image" style="max-width: 100px; max-height: 100px;">
             </div>
 
-            <div class="form-group">
-                <label for="know">須知</label>
-                <textarea class="form-control" id="know" name="know" rows="4" required>{{ $class->know }}</textarea>
-            </div>
+
 
             <div class="form-group">
                 <label for="forwho">使用對象</label>
@@ -39,24 +37,27 @@
 
             <div class="form-group">
                 <label for="photo">照片</label>
-                <input type="file" class="form-control-file" id="photo" name="photo">{{ $class->photo }}
+                <input type="file" class="form-control-file" id="photo" name="photo">
+                @if($class->photo)
+                    <img src="{{ asset('storage/' . $class->photo) }}" alt="Class Photo" style="max-width: 100px; max-height: 100px;">
+                @endif
             </div>
 
             <div class="form-group">
-                <label for="discountlink">價格</label>
-                <textarea class="form-control" id="money" name="money"  required>{{ $class->money }}</textarea>
+                <label for="money">價格</label>
+                <input type="text" class="form-control" id="money" name="money" value="{{ $class->money }}" required>
             </div>
-
 
             <div class="form-group">
                 <label for="discountlink">折扣出售</label>
                 <textarea class="form-control" id="discountlink" name="discountlink" rows="4" required>{{ $class->discountlink }}</textarea>
             </div>
 
-
-
-
             <button type="submit" class="btn btn-primary">更新資料</button>
         </form>
     </div>
 @endsection
+
+
+
+
