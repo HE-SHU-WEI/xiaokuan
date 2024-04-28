@@ -18,6 +18,12 @@ class ClassController extends Controller
         // 獲取所有課程
         $classes = Classlist::all();
 
+    // 過濾出 classname 沒有包含 '_' 字符的課程
+    $filteredClasses = $classes->filter(function ($class) {
+        return strpos($class->classname, '_') === false;
+    });
+
+
         // 定義可選的課程類型
         $classTypes = [
             '大一微積分',
@@ -39,10 +45,10 @@ class ClassController extends Controller
 
         // 如果沒有選擇課程類型，則顯示所有課程
         $filteredClasses = empty($selectedClassTypes)
-            ? $classes
-            : $classes->filter(function ($class) use ($selectedClassTypes) {
-                return in_array($class->forwho, $selectedClassTypes);
-            });
+        ? $filteredClasses
+        : $filteredClasses->filter(function ($class) use ($selectedClassTypes) {
+            return in_array($class->forwho, $selectedClassTypes);
+        });
 
         return view('class.index', compact('filteredClasses', 'classTypes', 'selectedClassTypes'));
     }
@@ -57,34 +63,36 @@ class ClassController extends Controller
         return view('class.show', compact('class'));
     }
 
+
+
     public function addToCart($id)
-{
-    // 檢查 Session 中是否有 remembered_account
-    if (session()->has('remembered_account')) {
-        // 獲取當前課程
-        $class = Classlist::findOrFail($id);
+    {
+        // 檢查 Session 中是否有 remembered_account
+        if (session()->has('remembered_account')) {
+            // 獲取當前課程
+            $class = Classlist::findOrFail($id);
 
-        // 獲取使用者的 remembered_account
-        $userAccount = session('remembered_account');
+            // 獲取使用者的 remembered_account
+            $userAccount = session('remembered_account');
 
-        // 插入資料到使用者的資料表，將classend設置為NULL
-        DB::table($userAccount)->insert([
-            'classname' => $class->classname,
-            'classbuy' => 'NOBUY',
-            'watchtime' => '00:00:00',
-            'videotime' => $class->videotime,
-            'classend' => null, // 將classend設置為NULL
-        ]);
 
-        return redirect()->route('showClass', ['id' => $id])->with('success', '課程已加入購物車');
-    } else {
-        // 如果未登入，存儲當前 URL 到 Session 並重定向到登入頁面
-        session(['redirectClass' => route('showClass', ['id' => $id])]);
+            // 插入資料到使用者的資料表，將classend設置為NULL
+            DB::table($userAccount)->insert([
+                'classname' => $class->classname,
+                'classbuy' => 'NOBUY',
+                'watchtime' => '00:00:00',
+                'videotime' => $class->videotime,
+                'classend' => null, // 將classend設置為NULL
+            ]);
 
-        return redirect()->route('login.form')->with('error', '請先登入');
+            return redirect()->route('showClass', ['id' => $id])->with('success', '課程已加入購物車');
+        } else {
+            // 如果未登入，存儲當前 URL 到 Session 並重定向到登入頁面
+            session(['redirectClass' => route('showClass', ['id' => $id])]);
+
+            return redirect()->route('login.form')->with('error', '請先登入');
+        }
     }
-}
-
 
 
 
