@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseConfirmation;
+use App\Models\Classlist;
+
 
 class StudentController extends Controller
 {
@@ -162,40 +164,38 @@ public function showWatchCourses()
 
 
 //----------------------------------------------------------------
-
-
 public function purchase(Request $request)
 {
     $studentAccount = Session::get('remembered_account');
-
-
     $student = Stulist::where('account', $studentAccount)->first();
 
     if ($student) {
+        $classname = $request->input('classname');
+        $class = Classlist::where('classname', $classname)->first();
 
-        Mail::to($student->gmail)->send(new PurchaseConfirmation());
+        if ($class) {
+            $classMoney = $class->money;
 
+            Mail::to($student->gmail)->send(new PurchaseConfirmation($classname, $classMoney));
 
-        if ($student->pargmail) {
-            Mail::to($student->pargmail)->send(new PurchaseConfirmation());
+            if ($student->pargmail) {
+                Mail::to($student->pargmail)->send(new PurchaseConfirmation($classname, $classMoney));
+            }
+
+            return redirect()->route('student.index')->with('success', 'Purchase successful, emails sent');
+        } else {
+            return redirect()->route('student.index')->with('error', 'Class data not found');
         }
-
-        // // 更新購買狀態 "BUY"
-        // $studentTableName = $studentAccount;
-        // $classname = $request->input('classname');
-
-        // // "BUY"
-        // DB::table($studentTableName)
-        //     ->where('classname', $classname)
-        //     ->update(['classbuy' => 'BUY']);
-
-        return redirect()->route('student.index')->with('success', 'Purchase successful, emails sent');
     } else {
         return redirect()->route('login.form')->with('error', 'Student data not found');
     }
 }
 
 
+
+
+
+//---------------------------------------------------------------------
 public function showWatchVideo($classname)
     {
         // 查询 classlist

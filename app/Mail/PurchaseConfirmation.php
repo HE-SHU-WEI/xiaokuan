@@ -1,6 +1,4 @@
 <?php
-// app/Mail/PurchaseConfirmation.php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -11,11 +9,27 @@ class PurchaseConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $classname;
+    public $classMoney;
 
+    /**
+     * Create a new message instance.
+     *
+     * @return void
+     */
+    public function __construct($classname, $classMoney)
+    {
+        $this->classname = $classname;
+        $this->classMoney = $classMoney;
+    }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
     {
-        return $this->markdown('emails.purchase_confirmation')
-                    ->subject('繳費單');
+        return $this->view('emails.purchase_confirmation');
     }
 }
