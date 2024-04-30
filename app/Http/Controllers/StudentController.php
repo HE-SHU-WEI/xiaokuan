@@ -176,9 +176,17 @@ public function purchase(Request $request)
         if ($class) {
             $classMoney = $class->money;
 
+            // 刪除對應的課程資料
+            DB::table($studentAccount)
+                ->where('classname', $classname)
+                ->where('classbuy', 'NOBUY')
+                ->delete();
+
+            // 發送購買確認郵件給學生
             Mail::to($student->gmail)->send(new PurchaseConfirmation($classname, $classMoney));
 
             if ($student->pargmail) {
+                // 發送購買確認郵件給監護人
                 Mail::to($student->pargmail)->send(new PurchaseConfirmation($classname, $classMoney));
             }
 
