@@ -457,44 +457,46 @@ public function storeStudentPurchase(Request $request)
     // 在學生的資料表中新增一筆資料，並取得課程的 videotime
     $videotime = $class->videotime;
 
-    // 檢查課程是否有折扣連結
+    // 检查是否有折扣链接
     if ($class->discountlink) {
-        // 解析折扣連結中的每個課程名稱
+        // 解析折扣链接中的每个课程名称，并将每个课程名称都当作课程前缀添加到学生的数据表中
         $discountedClasses = explode('，', $class->discountlink);
 
-        // 將每個課程名稱添加到學生的資料表中
         foreach ($discountedClasses as $discountedClass) {
+            // 查找与折扣课程前缀匹配的所有课程，并将它们添加到学生的数据表中
+            $similarClasses = Classlist::where('classname', 'like', $discountedClass . '%')->get();
+
+            foreach ($similarClasses as $similarClass) {
+                DB::table($studentTableName)->insert([
+                    'classname' => $similarClass->classname,
+                    'classbuy' => 'BUY',
+                    'watchtime' => '00:00:00',
+                    'classend' => $request->class_expire_date,
+                    'videotime' => $videotime,
+                ]);
+            }
+        }
+    } else {
+        $similarClasses = Classlist::where('classname', 'like', $request->classname . '%')->get();
+
+        foreach ($similarClasses as $similarClass) {
             DB::table($studentTableName)->insert([
-                'classname' => $discountedClass,
+                'classname' => $similarClass->classname,
                 'classbuy' => 'BUY',
                 'watchtime' => '00:00:00',
                 'classend' => $request->class_expire_date,
                 'videotime' => $videotime,
             ]);
-
-            // 將學生添加到課程名單中
-            DB::table($discountedClass)->insert([
-                'student_account' => $request->student_account,
-            ]);
         }
-    } else {
-        // 如果沒有折扣連結，則照原本的流程添加課程
-        DB::table($studentTableName)->insert([
-            'classname' => $request->classname,
-            'classbuy' => 'BUY',
-            'watchtime' => '00:00:00',
-            'classend' => $request->class_expire_date,
-            'videotime' => $videotime,
-        ]);
-
-        DB::table($request->classname)->insert([
-            'student_account' => $request->student_account,
-        ]);
     }
+
+    // 将学生添加到输入的课程名单中
+    DB::table($request->classname)->insert([
+        'student_account' => $request->student_account,
+    ]);
 
     return back()->with('success', '學生購課成功');
 }
-
 
 
 //------------------------------------------------
