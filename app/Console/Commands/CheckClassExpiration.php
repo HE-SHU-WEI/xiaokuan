@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Console\Commands;
+
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,11 +29,14 @@ class CheckClassExpiration extends Command
             $classes = DB::table($table)->get();
 
             foreach ($classes as $class) {
-                $classEndDate = Carbon::createFromFormat('Y-m-d', $class->classend);
+                // 检查课程对象是否包含结束日期属性
+                if (property_exists($class, 'classend')) {
+                    $classEndDate = Carbon::createFromFormat('Y-m-d', $class->classend);
 
-                if ($today->gte($classEndDate)) {
-                    // 删除过期课程
-                    DB::table($table)->where('classname', $class->classname)->delete();
+                    if ($today->gt($classEndDate)) {
+                        // 删除过期课程
+                        DB::table($table)->where('classname', $class->classname)->delete();
+                    }
                 }
             }
         }
