@@ -21,7 +21,7 @@ class CheckClassExpiration extends Command
 
         // 过滤以 "STU" 开头的学生表
         $stuTables = array_filter($tables, function ($table) {
-            return strpos($table, 'STU') === 0;
+            return strpos($table, 'stu') === 0;
         });
 
         foreach ($stuTables as $table) {
