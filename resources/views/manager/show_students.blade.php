@@ -15,9 +15,7 @@
                 <th style="border: 1px solid #dddddd; padding: 8px;">Email</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">地址1</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">地址2</th>
-                <th style="border: 1px solid #dddddd; padding: 8px;">地址3</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">家長姓名</th>
-                <th style="border: 1px solid #dddddd; padding: 8px;">家長Email</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">家長電話</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">如何得知</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">操作</th>
@@ -33,10 +31,8 @@
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->gmail }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->stuaddress1 }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->stuaddress2 }}</td>
-                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->stuaddress3 }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->parname }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->pargmail }}</td>
-                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->parnumber }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->Howtoknow }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">
                         <form action="{{ route('deleteStudent', $student->id) }}" method="POST">

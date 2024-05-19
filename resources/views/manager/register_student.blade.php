@@ -41,20 +41,14 @@
             <input type="text" class="form-control" name="stuaddress2">
         </div>
 
-        <div class="form-group">
-            <label for="stuaddress3">學生住址 3:</label>
-            <input type="text" class="form-control" name="stuaddress3">
-        </div>
+
 
         <div class="form-group">
             <label for="parname">家長姓名:</label>
             <input type="text" class="form-control" name="parname" required>
         </div>
 
-        <div class="form-group">
-            <label for="pargmail">家長 Gmail:</label>
-            <input type="email" class="form-control" name="pargmail" required>
-        </div>
+
 
         <div class="form-group">
             <label for="parnumber">家長電話:</label>

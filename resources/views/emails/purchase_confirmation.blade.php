@@ -7,6 +7,6 @@
     <h2>莊小寬數學購課繳費</h2>
     <p>感謝您的購買!</p>
     <p>您購買的課程名稱: {{ $classname }}</p>
-    <p>應繳金額: {{ $classMoney }}</p>
+    <p>應繳金額總計為: {{ $classMoney }}</p>
 </body>
 </html>

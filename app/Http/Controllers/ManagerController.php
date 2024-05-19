@@ -189,9 +189,7 @@ public function registerStudent(Request $request)
         'gmail' => 'required|string|email',
         'stuaddress1' => 'required|string',
         'stuaddress2' => 'nullable|string',
-        'stuaddress3' => 'nullable|string',
         'parname' => 'required|string',
-        'pargmail' => 'required|string|email',
         'parnumber' => 'required|string',
         'Howtoknow' => 'required|string',
     ]);
@@ -211,9 +209,7 @@ public function registerStudent(Request $request)
         'gmail' => $request->gmail,
         'stuaddress1' => $request->stuaddress1,
         'stuaddress2' => $request->stuaddress2,
-        'stuaddress3' => $request->stuaddress3,
         'parname' => $request->parname,
-        'pargmail' => $request->pargmail,
         'parnumber' => $request->parnumber,
         'Howtoknow' => $request->Howtoknow,
     ]);
@@ -222,7 +218,6 @@ public function registerStudent(Request $request)
     $this->createStudentCourseTable($account);
 
     Mail::to($request->input('gmail'))->send(new StudentRegistrationMail($student));
-    Mail::to($request->input('pargmail'))->send(new StudentRegistrationMail($student));
 
     return back()->with('success', '學生註冊成功');
 }

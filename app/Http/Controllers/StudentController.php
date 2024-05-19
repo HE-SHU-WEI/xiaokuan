@@ -164,36 +164,43 @@ public function showWatchCourses()
 
 
 //----------------------------------------------------------------
+
 public function purchase(Request $request)
 {
     $studentAccount = Session::get('remembered_account');
     $student = Stulist::where('account', $studentAccount)->first();
 
     if ($student) {
-        $classname = $request->input('classname');
-        $class = Classlist::where('classname', $classname)->first();
+        // 獲取選擇的課程名稱列表
+        $selectedCourses = $request->input('selected_courses');
 
-        if ($class) {
-            $classMoney = $class->money;
+        // 初始化總金額
+        $totalPrice = 0;
 
-            // 刪除對應的課程資料
-            DB::table($studentAccount)
-                ->where('classname', $classname)
-                ->where('classbuy', 'NOBUY')
-                ->delete();
+        // 初始化選擇的課程清單
+        $coursesList = '';
 
-            // 發送購買確認郵件給學生
-            Mail::to($student->gmail)->send(new PurchaseConfirmation($classname, $classMoney));
+        // 遍歷所選課程，計算總金額並構建課程清單
+        foreach ($selectedCourses as $courseName) {
+            $class = Classlist::where('classname', $courseName)->first();
 
-            if ($student->pargmail) {
-                // 發送購買確認郵件給監護人
-                Mail::to($student->pargmail)->send(new PurchaseConfirmation($classname, $classMoney));
+            if ($class) {
+                $totalPrice += $class->money;
+                $coursesList .= $courseName . ', ';
             }
-
-            return redirect()->route('student.index')->with('success', 'Purchase successful, emails sent');
-        } else {
-            return redirect()->route('student.index')->with('error', 'Class data not found');
         }
+
+        // 刪除最後的逗號和空格
+        $coursesList = rtrim($coursesList, ', ');
+
+        // 將所選課程名稱列表轉換為字串
+        $selectedCoursesString = implode(', ', $selectedCourses);
+
+        // 發送購買確認郵件給學生，包含所選課程清單和總金額
+        Mail::to($student->gmail)->send(new PurchaseConfirmation($selectedCoursesString, $totalPrice));
+
+        // 返回成功信息
+        return redirect()->route('student.index')->with('success', 'Purchase successful, email sent');
     } else {
         return redirect()->route('login.form')->with('error', 'Student data not found');
     }
@@ -203,7 +210,10 @@ public function purchase(Request $request)
 
 
 
+
 //---------------------------------------------------------------------
+
+
 public function showWatchVideo($classname)
     {
         // 查询 classlist

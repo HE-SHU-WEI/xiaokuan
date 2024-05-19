@@ -18,9 +18,7 @@ class CreateStulistTable extends Migration
             $table->string('gmail');
             $table->string('stuaddress1');
             $table->string('stuaddress2');
-            $table->string('stuaddress3');
             $table->string('parname');
-            $table->string('pargmail');
             $table->string('parnumber');
             $table->string('Howtoknow');
             $table->timestamps();
