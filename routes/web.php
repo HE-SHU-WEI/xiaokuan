@@ -154,3 +154,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 //------------------------------------
 
 
+
+
+
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
+
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
