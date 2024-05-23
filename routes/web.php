@@ -155,13 +155,47 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 
+//Route::get('/首頁_莊小寬數學', function () {
+//    return view('index');
+//})->name('index');
 
+Route::get('/免費試聽', function () {
+    return view('free_class');
+})->name('free_class');
 
-Route::get('/login', function () {
+Route::get('/常見QA', function () {
+    return view('QA');
+})->name('QA');
+
+Route::get('/教師資歷', function () {
+    return view('teacher_experience');
+})->name('teacher_experience');
+
+Route::get('/報名流程', function () {
+    return view('registration_process');
+})->name('registration_process');
+
+Route::get('/註冊帳號_登入', function () {
     return view('login');
 })->name('login');
 
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+Route::get('/註冊帳號_註冊', function () {
+    return view('register');
+})->name('register');
+
+Route::get('/課程頁1', function () {
+    return view('class');
+})->name('class');
+
+Route::get('/課程特色', function () {
+    return view('features');
+})->name('features');
+
+Route::get('/學員感言', function () {
+    return view('st_comment');
+})->name('st_comment');
+
+
+
+
 
