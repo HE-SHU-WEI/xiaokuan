@@ -44,7 +44,7 @@ Route::prefix('manager')->group(function () {
     Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
 
     // Edit Teacher Routes
-    Route::get('/editteacher', [ManagerController::class, 'editTeacherView'])->name('editTeacherView');
+    Route::get('/editteacher', [ManagerController::class, 'editTeacherView'])->name('manager.editTeacherView');
     Route::get('/editteacher/{id}', [ManagerController::class, 'editTeacherForm'])->name('manager.editTeacherForm');
     Route::put('/updateteacher/{id}', [ManagerController::class, 'updateTeacher'])->name('manager.updateTeacher');
     Route::delete('/deleteteacher/{id}', [ManagerController::class, 'deleteTeacher'])->name('manager.deleteTeacher');
@@ -52,6 +52,8 @@ Route::prefix('manager')->group(function () {
     // Create Teacher Routes
     Route::get('/create-teacher', [ManagerController::class, 'createTeacherView'])->name('manager.createTeacherView');
     Route::post('/store-teacher', [ManagerController::class, 'storeTeacher'])->name('manager.storeTeacher');
+
+
 
     // Edit Manager Account Route
     Route::get('/manager/edit-manager', [ManagerController::class, 'editManagerView'])->name('editManagerView');
@@ -155,45 +157,47 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 
-//Route::get('/首頁_莊小寬數學', function () {
+// Route::get('/首頁_莊小寬數學', function () {
 //    return view('index');
-//})->name('index');
+// })->name('index');
 
-Route::get('/免費試聽', function () {
-    return view('free_class');
-})->name('free_class');
+// Route::get('/免費試聽', function () {
+//     return view('free_class');
+// })->name('free_class');
 
-Route::get('/常見QA', function () {
-    return view('QA');
-})->name('QA');
+// Route::get('/常見QA', function () {
+//     return view('QA');
+// })->name('QA');
 
-Route::get('/教師資歷', function () {
-    return view('teacher_experience');
-})->name('teacher_experience');
+// Route::get('/教師資歷', function () {
+//     return view('teacher_experience');
+// })->name('teacher_experience');
 
-Route::get('/報名流程', function () {
-    return view('registration_process');
-})->name('registration_process');
+// Route::get('/報名流程', function () {
+//     return view('registration_process');
+// })->name('registration_process');
 
-Route::get('/註冊帳號_登入', function () {
-    return view('login');
-})->name('login');
+// Route::get('/註冊帳號_登入', function () {
+//     return view('login');
+// })->name('login');
 
-Route::get('/註冊帳號_註冊', function () {
-    return view('register');
-})->name('register');
+// Route::get('/註冊帳號_註冊', function () {
+//     return view('register');
+// })->name('register');
 
-Route::get('/課程頁1', function () {
-    return view('class');
-})->name('class');
+// Route::get('/課程頁1', function () {
+//     return view('class');
+// })->name('class');
 
-Route::get('/課程特色', function () {
-    return view('features');
-})->name('features');
+// Route::get('/課程特色', function () {
+//     return view('features');
+// })->name('features');
 
-Route::get('/學員感言', function () {
-    return view('st_comment');
-})->name('st_comment');
+// Route::get('/學員感言', function () {
+//     return view('st_comment');
+// })->name('st_comment');
+
+// Route::get('/註冊', [ManagerController::class, 'registerStudentView'])->name('outsideregisterStudentView');
 
 
 

@@ -1,33 +1,39 @@
-{{-- resources/views/manager/create_teacher.blade.php --}}
-
 @extends('layouts.app')
 
 @section('content')
-    <h2>Create New Teacher</h2>
-
-    <form action="{{ route('manager.storeTeacher') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <label for="name">姓名:</label>
-        <input type="text" name="name" required><br>
-
-        <label for="account">帳號:</label>
-        <input type="text" name="account" required><br>
-
-        <label for="password">密碼:</label>
-        <input type="password" name="password" required><br>
-
-        <label for="introduction">介紹:</label>
-        <textarea name="introduction"></textarea><br>
-
-        <label for="background">老師背景:</label>
-        <textarea name="background"></textarea><br>
-
-        <label for="photo">照片:</label>
-        <input type="file" name="photo"><br>
-
-        <label for="entry">加入時間:</label>
-        <input type="date" name="entry"><br>
-
-        <button type="submit">創建老師資料</button>
-    </form>
+    <div class="container">
+        <h2>新增教師</h2>
+        <form action="{{ route('manager.storeTeacher') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="name">姓名：</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="輸入姓名">
+            </div>
+            <div class="form-group">
+                <label for="account">帳號：</label>
+                <input type="text" class="form-control" id="account" name="account" placeholder="輸入帳號">
+            </div>
+            <div class="form-group">
+                <label for="password">密碼：</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="輸入密碼">
+            </div>
+            <div class="form-group">
+                <label for="introduction">介紹：</label>
+                <textarea class="form-control" id="introduction" name="introduction" rows="3" placeholder="輸入介紹"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="background">背景：</label>
+                <textarea class="form-control" id="background" name="background" rows="3" placeholder="輸入背景"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="photo">照片：</label>
+                <input type="file" class="form-control-file" id="photo" name="photo">
+            </div>
+            <div class="form-group">
+                <label for="entry">進入時間：</label>
+                <input type="date" class="form-control" id="entry" name="entry">
+            </div>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+    </div>
 @endsection

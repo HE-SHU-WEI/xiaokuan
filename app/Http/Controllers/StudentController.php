@@ -164,7 +164,6 @@ public function showWatchCourses()
 
 
 //----------------------------------------------------------------
-
 public function purchase(Request $request)
 {
     $studentAccount = Session::get('remembered_account');
@@ -199,8 +198,17 @@ public function purchase(Request $request)
         // 發送購買確認郵件給學生，包含所選課程清單和總金額
         Mail::to($student->gmail)->send(new PurchaseConfirmation($selectedCoursesString, $totalPrice));
 
+        // 刪除購買的課程記錄
+        foreach ($selectedCourses as $courseName) {
+            // 動態地從學生專屬表格中刪除記錄
+            DB::table($studentAccount)
+                ->where('classname', $courseName)
+                ->where('classbuy', 'NOBUY')
+                ->delete();
+        }
+
         // 返回成功信息
-        return redirect()->route('student.index')->with('success', 'Purchase successful, email sent');
+        return redirect()->route('student.index')->with('success', 'Purchase successful, email sent and records updated');
     } else {
         return redirect()->route('login.form')->with('error', 'Student data not found');
     }
@@ -224,8 +232,9 @@ public function showWatchVideo($classname)
         if ($classInfo) {
             $link = $classInfo->link;
             $classname = $classInfo->classname;
+            $drive = $classInfo->drive;
 
-            return view('student.watch_video', compact('link', 'classname'));
+            return view('student.watch_video', compact('link', 'classname','drive'));
         } else {
 
             return redirect()->route('student.index')->with('error', '課程不存在');

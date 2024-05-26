@@ -46,37 +46,100 @@ class ManagerController extends Controller
 
     public function storeTeacher(Request $request)
     {
-
-        $request->validate([
+        // dd($request);
+        // 驗證請求的資料
+        $validatedData = $request->validate([
             'name' => 'required|string',
-            'account' => 'required|string|unique:userlist,account',
-            'password' => 'required|string|unique:userlist,password',
+            'account' => 'required|string',
+            'password' => 'required|string',
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
-            'photo' => 'nullable|image',
-            'entry' => 'nullable|date',
+            'photo' => 'nullable|image|',
+            'entry' => 'required|date',
         ]);
 
 
-        $photoPath =  $request->file('photo')->getClientOriginalName();
-        $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
 
 
 
+        // 如果有上傳照片，處理照片上傳
+    if ($request->hasFile('photo')) {
+        // 取得上傳的照片檔案
+        $photo = $request->file('photo');
 
-        // 創建老師
-        Userlist::create([
-            'name' => $request->name,
-            'account' => $request->account,
-            'password' => $request->password,
-            'introduction' => $request->introduction,
-            'background' => $request->background,
-            'photo' => 'photos/'.$photoPath,
-            'entry' => $request->entry,
-        ]);
+        // 將照片儲存到 public/storage/photos 資料夾中，並取得儲存後的路徑
+        $photoPath = $photo->store('photos', 'public');
 
-        return back()->with('success', 'Teacher created successfully');
+        // 將照片路徑加入到驗證通過的資料中
+        $validatedData['photo'] = $photoPath;
     }
+
+    // dd($validatedData);
+
+    // 創建教師資料
+    $teacher = new Userlist();
+    $teacher->name = $validatedData['name'];
+    $teacher->account = $validatedData['account'];
+    $teacher->password = $validatedData['password'];
+    $teacher->introduction = $validatedData['introduction'];
+    $teacher->background = $validatedData['background'];
+    $teacher->photo = $validatedData['photo'] ?? null;
+    $teacher->entry = $validatedData['entry'];
+    $teacher->save();
+
+    return redirect()->route('manager.editTeacherView')->with('success', '教師新增成功！');
+}
+
+
+
+
+
+
+
+
+//     public function storeTeacher(Request $request)
+// {
+//     Log::info('Received request to store teacher', $request->all());
+
+//     $validatedData = $request->validate([
+//         'name' => 'required|string',
+//         'account' => 'required|string|unique:userlist,account',
+//         'password' => 'required|string|unique:userlist,password',
+//         'introduction' => 'nullable|string',
+//         'background' => 'nullable|string',
+//         'photo' => 'nullable|image',
+//         'entry' => 'nullable|date',
+//     ]);
+
+//     Log::info('Validated data', $validatedData);
+
+//     $photoPath = $request->hasFile('photo') ? 'photos/' . $request->file('photo')->getClientOriginalName() : null;
+//     if ($photoPath) {
+//         $request->file('photo')->storeAs('public/photos', $request->file('photo')->getClientOriginalName());
+//     }
+
+//     try {
+//         $teacher = Userlist::create([
+//             'name' => $validatedData['name'],
+//             'account' => $validatedData['account'],
+//             'password' => $validatedData['password'],  // 请注意：实际应用中请加密密码
+//             'introduction' => $validatedData['introduction'],
+//             'background' => $validatedData['background'],
+//             'photo' => $photoPath,
+//             'entry' => $validatedData['entry'],
+//         ]);
+
+//         Log::info('Teacher created successfully', ['teacher' => $teacher]);
+
+//         return back()->with('success', 'Teacher created successfully');
+//     } catch (\Exception $e) {
+//         Log::error('Failed to create teacher', ['error' => $e->getMessage()]);
+//         return back()->withErrors('Failed to create teacher');
+//     }
+// }
+
+
+
 
     public function editTeacherForm($teacherId)
     {
@@ -176,6 +239,12 @@ public function registerStudentView()
 {
 
     return view('manager.register_student');
+}
+
+public function outsideregisterStudentView()
+{
+
+    return view('register_student');
 }
 
 public function registerStudent(Request $request)
@@ -340,6 +409,8 @@ public function createCourse()
     return view('manager.upload_course');
 }
 
+
+
 public function storeCourse(Request $request)
 {
     $validatedData = $request->validate([
@@ -352,7 +423,8 @@ public function storeCourse(Request $request)
         'photo' => 'nullable|image',
         'forwho' => 'required|string',
         'money' => 'required|numeric',
-        'discountlink' => 'nullable|string'
+        'discountlink' => 'nullable|string',
+        'drive' => 'nullable|string'
     ]);
 
     // Find teacher ID
@@ -387,6 +459,7 @@ public function storeCourse(Request $request)
     $class->discountlink = $validatedData['discountlink'];
     $class->introduction = $introductionImagePath; // Assign introduction image separately
     $class->photo = $photoPath;
+    $class->drive = $validatedData['drive'];
     $class->save();
 
     // Create course table

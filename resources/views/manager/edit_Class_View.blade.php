@@ -53,6 +53,11 @@
                 <textarea class="form-control" id="discountlink" name="discountlink" rows="4" required>{{ $class->discountlink }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label for="drive">雲端連結</label>
+                <textarea class="form-control" id="drive" name="drive" rows="4" required>{{ $class->drive }}</textarea>
+            </div>
+
             <button type="submit" class="btn btn-primary">更新資料</button>
         </form>
     </div>

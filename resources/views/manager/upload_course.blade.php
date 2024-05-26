@@ -67,6 +67,12 @@
                 <input type="text" class="form-control" name="discountlink">
             </div>
 
+            <!-- Drive -->
+            <div class="form-group">
+                <label for="drive">雲端連結:</label>
+                <input type="text" class="form-control" name="drive">
+            </div>
+
             <button type="submit" class="btn btn-primary">上傳</button>
         </form>
     </div>

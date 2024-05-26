@@ -5,6 +5,11 @@
 
     <iframe id="videoFrame" width="560" height="315" src="{{ $link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+    <h2>課程講義連結</h2>
+    <div>
+        {{ $drive }}
+    </div>
+
     <a href="javascript:void(0)" id="backButton" class="btn btn-primary">回前頁</a>
 
     <form id="watchTimeForm" action="{{ route('update.watchtime') }}" method="POST" style="display: none;">

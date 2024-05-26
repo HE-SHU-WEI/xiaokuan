@@ -82,7 +82,7 @@ class ClassController extends Controller
                 'classbuy' => 'NOBUY',
                 'watchtime' => '00:00:00',
                 'videotime' => $class->videotime,
-                'classend' => null, // 將classend設置為NULL
+                'classend' => '9999-12-31', // 將classend設置為NULL
             ]);
 
             return redirect()->route('showClass', ['id' => $id])->with('success', '課程已加入購物車');

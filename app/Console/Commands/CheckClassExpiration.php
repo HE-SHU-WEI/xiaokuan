@@ -31,11 +31,13 @@ class CheckClassExpiration extends Command
             foreach ($classes as $class) {
                 // 检查课程对象是否包含结束日期属性
                 if (property_exists($class, 'classend')) {
-                    $classEndDate = Carbon::createFromFormat('Y-m-d', $class->classend);
+                    if ($class->classend !== null) {
+                        $classEndDate = Carbon::createFromFormat('Y-m-d', $class->classend);
 
-                    if ($today->gt($classEndDate)) {
-                        // 删除过期课程
-                        DB::table($table)->where('classname', $class->classname)->delete();
+                        if ($today->gt($classEndDate)) {
+                            // 删除过期课程
+                            DB::table($table)->where('classname', $class->classname)->delete();
+                        }
                     }
                 }
             }
