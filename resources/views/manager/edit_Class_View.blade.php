@@ -13,6 +13,11 @@
             </div>
 
             <div class="form-group">
+                <label for="classtype">課程種類</label>
+                <input type="text" class="form-control" id="classtype" name="classtype" value="{{ $class->classtype }}" required>
+            </div>
+
+            <div class="form-group">
                 <label for="link">課程連結</label>
                 <input type="text" class="form-control" id="link" name="link" value="{{ $class->link }}" required>
             </div>
@@ -56,6 +61,11 @@
             <div class="form-group">
                 <label for="drive">雲端連結</label>
                 <textarea class="form-control" id="drive" name="drive" rows="4" required>{{ $class->drive }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="classnum">課程包含數量</label>
+                <textarea class="form-control" id="classnum" name="classnum" rows="4" required>{{ $class->classnum }}</textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">更新資料</button>

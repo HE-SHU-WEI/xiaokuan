@@ -364,23 +364,31 @@ protected function createStudentCourseTable($account)
 
     // Validate the request data
     $validatedData = $request->validate([
-        'classname' => 'required|string',
+        'classtype' => 'required|string',
         'link' => 'required|url',
         'videotime' => 'required|string',
+        'introduction' => 'nullable|image',
+        'photo' => 'nullable|image',
         'forwho' => 'required|string',
         'money' => 'required|numeric',
+        'classname' => 'required|string',
         'discountlink' => 'nullable|string',
-        'photo' => 'nullable|image', // Update validation rules for photo upload
-        'introduction' => 'nullable|image', // Add validation rules for introduction image upload
+        'drive' => 'nullable|string',
+        'classnum' => 'nullable|int',
+
+
     ]);
 
     // Update class data
-    $class->classname = $validatedData['classname'];
+    $class->classtype = $validatedData['classtype'];
     $class->link = $validatedData['link'];
     $class->videotime = $validatedData['videotime'];
+    $class->classname = $validatedData['classname'];
     $class->forwho = $validatedData['forwho'];
     $class->money = $validatedData['money'];
     $class->discountlink = $validatedData['discountlink'];
+    $class->drive = $validatedData['drive'];
+    $class->classnum = $validatedData['classnum'];
 
     // Handle photo upload
     if ($request->hasFile('photo')) {
