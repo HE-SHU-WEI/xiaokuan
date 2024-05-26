@@ -15,6 +15,9 @@
         <label for="account">帳號:</label>
         <input type="text" name="account" value="{{ $teacher->account }}" required><br>
 
+        <label for="account">密碼:</label>
+        <input type="text" name="password" value="{{ $teacher->password }}" required><br>
+
         <label for="introduction">介紹:</label>
         <textarea name="introduction">{{ $teacher->introduction }}</textarea><br>
 

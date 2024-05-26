@@ -10,6 +10,7 @@
             <tr style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
                 <th style="border: 1px solid #dddddd; padding: 8px;">學號</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">姓名</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">密碼</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">學校</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">年級</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">Email</th>
@@ -26,6 +27,7 @@
                 <tr style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->account }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->name }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->password }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->school }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->grade }}</td>
                     <td style="border: 1px solid #dddddd; padding: 8px;">{{ $student->gmail }}</td>
