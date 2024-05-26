@@ -197,7 +197,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 //     return view('st_comment');
 // })->name('st_comment');
 
-// Route::get('/註冊', [ManagerController::class, 'registerStudentView'])->name('outsideregisterStudentView');
+Route::get('/註冊', [ManagerController::class, 'outsideregisterStudentView'])->name('outsideregisterStudentView');
 
 
 

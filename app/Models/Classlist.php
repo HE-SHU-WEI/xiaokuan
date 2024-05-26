@@ -19,6 +19,8 @@ class Classlist extends Model
         'photo',
         'money',
         'classtype',
+        'discountlink',
+        'drive'
     ];
 
 }

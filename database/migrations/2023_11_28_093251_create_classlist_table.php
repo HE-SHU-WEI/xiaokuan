@@ -22,6 +22,7 @@ class CreateClasslistTable extends Migration
             $table->string('classname');
             $table->string('discountlink');
             $table->text('drive');
+            $table->int('classnum');
             $table->timestamps();
 
             $table->foreign('teacherid')->references('id')->on('userlist')->onDelete('cascade');
