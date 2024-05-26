@@ -424,7 +424,8 @@ public function storeCourse(Request $request)
         'forwho' => 'required|string',
         'money' => 'required|numeric',
         'discountlink' => 'nullable|string',
-        'drive' => 'nullable|string'
+        'drive' => 'nullable|string',
+        'classnum' => 'nullable|int'
     ]);
 
     // Find teacher ID
@@ -460,6 +461,7 @@ public function storeCourse(Request $request)
     $class->introduction = $introductionImagePath; // Assign introduction image separately
     $class->photo = $photoPath;
     $class->drive = $validatedData['drive'];
+    $class->classnum = $validatedData['classnum'];
     $class->save();
 
     // Create course table

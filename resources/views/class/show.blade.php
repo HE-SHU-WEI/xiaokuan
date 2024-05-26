@@ -9,7 +9,7 @@
         <p>課程時長: {{ $class->videotime }}</p>
         <img src="{{ asset('storage/' . $class->introduction) }}" alt="Introduction Image">
         <p>對象: {{ $class->forwho }}</p>
-        <p>須知: {{ $class->know }}</p>
+        <p>包含的課程數量: {{ $class->classnum }}</p>
 
         @if(session()->has('remembered_account'))
             <!-- 如果 Session 中有填入 remembered_account，顯示加入購物車按鈕 -->

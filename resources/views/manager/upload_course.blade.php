@@ -73,6 +73,12 @@
                 <input type="text" class="form-control" name="drive">
             </div>
 
+            <!-- classnum -->
+            <div class="form-group">
+                <label for="classnum">包含的課程數量:</label>
+                <input type="int" class="form-control" name="classnum">
+            </div>
+
             <button type="submit" class="btn btn-primary">上傳</button>
         </form>
     </div>
