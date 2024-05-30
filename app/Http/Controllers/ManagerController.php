@@ -466,7 +466,7 @@ public function storeCourse(Request $request)
     $class->forwho = $validatedData['forwho'];
     $class->money = $validatedData['money'];
     $class->discountlink = $validatedData['discountlink'];
-    $class->introduction = $introductionImagePath; // Assign introduction image separately
+    $class->introduction = $introductionImagePath;
     $class->photo = $photoPath;
     $class->drive = $validatedData['drive'];
     $class->classnum = $validatedData['classnum'];
@@ -518,6 +518,8 @@ public function storeStudentPurchase(Request $request)
         'class_expire_date' => 'required|date',
     ]);
 
+
+
     // 驗證課程是否存在
     $class = Classlist::where('classname', $request->classname)->first();
     if (!$class) {
@@ -537,9 +539,10 @@ public function storeStudentPurchase(Request $request)
 
     // 检查是否有折扣链接
     if ($class->discountlink) {
+
         // 解析折扣链接中的每个课程名称，并将每个课程名称都当作课程前缀添加到学生的数据表中
         $discountedClasses = explode('，', $class->discountlink);
-
+        // dd('sdf');
         foreach ($discountedClasses as $discountedClass) {
             // 查找与折扣课程前缀匹配的所有课程，并将它们添加到学生的数据表中
             $similarClasses = Classlist::where('classname', 'like', $discountedClass . '%')->get();
@@ -552,9 +555,11 @@ public function storeStudentPurchase(Request $request)
                     'classend' => $request->class_expire_date,
                     'videotime' => $videotime,
                 ]);
+                dd($studentTableName);
             }
         }
     } else {
+        // dd('sdf');
         $similarClasses = Classlist::where('classname', 'like', $request->classname . '%')->get();
 
         foreach ($similarClasses as $similarClass) {
@@ -565,6 +570,7 @@ public function storeStudentPurchase(Request $request)
                 'classend' => $request->class_expire_date,
                 'videotime' => $videotime,
             ]);
+            // dd($studentTableName);
         }
     }
 
