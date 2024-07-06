@@ -133,6 +133,8 @@ use App\Http\Controllers\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+// Route::get('forgot-password', [LoginController::class, 'showLinkRequestForm'])->name('password.request');
+// Route::post('forgot-password', [LoginController::class, 'sendPassword'])->name('password.email');
 
 
 /*class */
@@ -154,6 +156,26 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 //------------------------------------
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+// 忘记密码请求表单
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+
+// 发送重设密码链接
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// 显示重设密码表单
+// Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// 提交新的密码
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+
+//------------------------------------
+
 
 
 

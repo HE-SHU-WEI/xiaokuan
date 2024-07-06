@@ -15,7 +15,8 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        // 'passwords' => 'users',
+        'passwords' => 'stulist',
     ],
 
     /*
@@ -42,7 +43,7 @@ return [
         ],
         'student' => [
             'driver' => 'session',
-            'provider' => 'students',
+            'provider' => 'stulist',
         ],
 
         'manager' => [
@@ -74,6 +75,12 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'stulist' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Stulist::class,
+            'table' => 'stulist',
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -96,11 +103,17 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        // 'users' => [
+        //     'provider' => 'users',
+        //     'table' => 'password_resets',
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
+
+        'stulist' => [
+            'provider' => 'stulist',
             'table' => 'password_resets',
             'expire' => 60,
-            'throttle' => 60,
         ],
     ],
 

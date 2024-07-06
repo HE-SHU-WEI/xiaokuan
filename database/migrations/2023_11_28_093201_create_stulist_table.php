@@ -21,6 +21,8 @@ class CreateStulistTable extends Migration
             $table->string('parname');
             $table->string('parnumber');
             $table->string('Howtoknow');
+            $table->string('password_reset_token');
+            $table->timestamp('password_reset_token_expiry');
             $table->timestamps();
         });
     }
