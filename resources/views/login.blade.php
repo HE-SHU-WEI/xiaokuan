@@ -13,7 +13,7 @@
     <button type="submit">登入</button>
 </form>
 
-<a href="{{ route('password.request') }}">忘记密码？</a>
+<a href="{{ route('password.request') }}">忘記密碼？</a>
 
 @if(session('error'))
     <div>{{ session('error') }}</div>

@@ -6,14 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.6",
+        "doctrine/dbal": "^2.1.5",
         "google/apiclient": "^2.15",
         "google/apiclient-services": "^0.326.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.52.16",
         "laravel/sanctum": "^3.0",
+        "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.7",
-
-        "doctrine/dbal": "^2.1.5"
+        "socialiteproviders/yahoo": "^4.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
