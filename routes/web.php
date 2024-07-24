@@ -125,6 +125,7 @@ Route::post('/update-watchtime', [StudentController::class, 'updateWatchTime'])-
 
 Route::post('/progress', [StudentController::class, 'progress'])->name('progress');
 
+Route::get('/profile', [StudentController::class, 'showProfile'])->name('student.profile');
 
 
 /*login*/
