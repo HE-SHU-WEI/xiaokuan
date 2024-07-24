@@ -155,7 +155,9 @@ class ManagerController extends Controller
 
         $request->validate([
             'name' => 'required|string',
-            'account' => 'required|string|unique:userlist,account,' . $teacherId,
+            // 'account' => 'required|string|unique:userlist,account,' . $teacherId,
+            'account' => 'required|string',
+            'password' => 'required|string',
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
             'photo' => 'nullable|image',
@@ -168,6 +170,7 @@ class ManagerController extends Controller
         // 更新紀錄
         $teacher->name = $request->name;
         $teacher->account = $request->account;
+        $teacher->password = $request->password;
         $teacher->introduction = $request->introduction;
         $teacher->background = $request->background;
 
@@ -184,7 +187,7 @@ class ManagerController extends Controller
         $teacher->entry = $request->entry;
         $teacher->save();
 
-        return redirect()->route('editTeacherView')->with('success', '老師資料已更新');
+        return redirect()->route('manager.editTeacherView')->with('success', '老師資料已更新');
     }
 
     public function deleteTeacher($teacherId)
