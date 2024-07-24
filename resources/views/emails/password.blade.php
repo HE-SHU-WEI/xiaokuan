@@ -18,5 +18,7 @@
     <p>If you did not request a password reset, no further action is required.</p>
 
     <p>Thank you.</p>
+    <img src="{{ asset('C:\Users\User\Downloads\angle.jpg') }}" alt="Your Image" style="max-width: 100%; height: auto;">
+
 </body>
 </html>

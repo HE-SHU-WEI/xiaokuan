@@ -13,5 +13,7 @@
     <p>帳號 : 119004546937</p>
     <p>戶名 : 莊小寬</p>
     <p>銀行名稱 : 台銀博愛</p>
+    <!-- 嵌入的圖片 -->
+    <img src="cid:payment.jpg" alt="Payment Instructions" />
 </body>
 </html>

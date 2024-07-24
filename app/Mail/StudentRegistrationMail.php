@@ -20,5 +20,7 @@ class StudentRegistrationMail extends Mailable
     {
         return $this->view('emails.student_registration')
                     ->subject('Welcome to Our Platform');
+
+
     }
 }

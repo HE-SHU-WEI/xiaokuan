@@ -155,7 +155,6 @@ class ManagerController extends Controller
 
         $request->validate([
             'name' => 'required|string',
-            // 'account' => 'required|string|unique:userlist,account,' . $teacherId,
             'account' => 'required|string',
             'password' => 'required|string',
             'introduction' => 'nullable|string',
@@ -367,14 +366,14 @@ protected function createStudentCourseTable($account)
 
     // Validate the request data
     $validatedData = $request->validate([
-        'classtype' => 'required|string',
-        'link' => 'required|url',
-        'videotime' => 'required|string',
+        'classtype' => 'nullable|string',
+        'link' => 'nullable|url',
+        'videotime' => 'nullable|string',
         'introduction' => 'nullable|image',
         'photo' => 'nullable|image',
-        'forwho' => 'required|string',
-        'money' => 'required|numeric',
-        'classname' => 'required|string',
+        'forwho' => 'nullable|string',
+        'money' => 'nullable|numeric',
+        'classname' => 'nullable|string',
         'discountlink' => 'nullable|string',
         'drive' => 'nullable|string',
         'classnum' => 'nullable|int',
@@ -383,15 +382,15 @@ protected function createStudentCourseTable($account)
     ]);
 
     // Update class data
-    $class->classtype = $validatedData['classtype'];
-    $class->link = $validatedData['link'];
-    $class->videotime = $validatedData['videotime'];
-    $class->classname = $validatedData['classname'];
-    $class->forwho = $validatedData['forwho'];
-    $class->money = $validatedData['money'];
-    $class->discountlink = $validatedData['discountlink'];
-    $class->drive = $validatedData['drive'];
-    $class->classnum = $validatedData['classnum'];
+    $class->classtype = $validatedData['classtype'] ?? $class->classtype;
+    $class->link = $validatedData['link'] ?? $class->link;
+    $class->videotime = $validatedData['videotime'] ?? $class->videotime;
+    $class->classname = $validatedData['classname'] ?? $class->classname;
+    $class->forwho = $validatedData['forwho'] ?? $class->forwho;
+    $class->money = $validatedData['money'] ?? $class->money;
+    $class->discountlink = $validatedData['discountlink'] ?? $class->discountlink;
+    $class->drive = $validatedData['drive'] ?? $class->drive;
+    $class->classnum = $validatedData['classnum'] ?? $class->classnum;
 
     // Handle photo upload
     if ($request->hasFile('photo')) {
@@ -596,7 +595,7 @@ public function storeStudentPurchase(Request $request)
 public function showStudents()
 {
     $students = Stulist::all(); // 获取所有学生数据
-    return view('manager.show_students', compact('students'));
+    return view('manager.show_Students', compact('students'));
 }
 
 // public function exportStudents()
