@@ -161,6 +161,7 @@
             <h2 class="section-title"></h2>
 
 
+<<<<<<< HEAD
             <div class="row">
               <div class="col-12">
                 <div class="card">
@@ -188,6 +189,13 @@
           </div>
         </section>
       </div>
+=======
+
+    <a href="{{ route('class.index') }}" class="btn btn-primary">去購買課程</a><br>
+
+
+    <a href="{{ route('cart.show') }}" class="btn btn-info">查看購物車</a><br>
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 
     </div>
   </div>
@@ -204,6 +212,7 @@
   <!-- JS Libraies -->
   <script src="/assets/modules/summernote/summernote-bs4.js"></script>
 
+<<<<<<< HEAD
   <!-- Page Specific JS File -->
   
   <!-- Template JS File -->
@@ -211,3 +220,13 @@
   <script src="/assets/js/custom.js"></script>
 </body>
 </html>
+=======
+    <a href="{{ route('student.profile') }}" class="btn btn-warning">個人檔案</a><br>
+
+    <!-- Logout button -->
+    <form method="post" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-danger">登出</button>
+    </form>
+@endsection
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947

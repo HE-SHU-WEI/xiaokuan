@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- login.blade.php -->
 <!doctype html>
 <html>
@@ -75,6 +76,21 @@
                 </form>
 
                 @if(session('status'))
+=======
+<form method="post" action="{{ route('password.email') }}">
+    @csrf
+
+    <label for="account">學號:</label>
+    <input type="text" name="account" id="account" required>
+
+    <label for="email">email:</label>
+    <input type="email" name="email" id="email" required>
+
+    <button type="submit">發送重設密碼鏈接</button>
+</form>
+
+@if(session('status'))
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
     <div>{{ session('status') }}</div>
 @endif
 
@@ -85,6 +101,7 @@
         @endforeach
     </div>
 @endif
+<<<<<<< HEAD
 
               </div>
  
@@ -115,3 +132,5 @@
 </body>
 </html>
 
+=======
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947

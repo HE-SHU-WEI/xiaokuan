@@ -124,6 +124,10 @@ Route::post('/purchase', [StudentController::class,'purchase'])->name('purchase'
 Route::post('/update-watchtime', [StudentController::class, 'updateWatchTime'])->name('update.watchtime');
 
 Route::post('/progress', [StudentController::class, 'progress'])->name('progress');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 Route::get('/profile', [StudentController::class, 'showProfile'])->name('student.profile');
 
 
@@ -158,6 +162,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 //------------------------------------
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+<<<<<<< HEAD
 
 // 忘记密码请求表单
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -210,6 +215,78 @@ Route::get('/教師資歷', function () {
 Route::get('/報名流程', function () {
     return view('registration_process');
 })->name('registration_process');
+=======
+
+// 忘记密码请求表单
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+
+// 发送重设密码链接
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// 显示重设密码表单
+// Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+
+// 提交新的密码
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+
+//------------------------------------
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
+
+
+<<<<<<< HEAD
+Route::get('/註冊帳號_註冊', function () {
+    return view('register');
+})->name('register');
+
+Route::get('/課程頁1', function () {
+    return view('class');
+})->name('class');
+
+Route::get('/課程特色', function () {
+    return view('features');
+})->name('features');
+
+Route::get('/學員感言', function () {
+    return view('st_comment');
+})->name('st_comment');
+=======
+
+
+Route::get('/首頁_莊小寬數學', function () {
+   return view('index');
+})->name('index');
+
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
+
+
+
+Route::get('/服務條款', function () {
+    return view('Terms_of_Service');
+ })->name('Terms_of_Service');
+
+ Route::get('/註冊條款', function () {
+    return view('Registration_Terms');
+ })->name('Registration_Terms');
+
+
+Route::get('/免費試聽', function () {
+    return view('free_class');
+})->name('free_class');
+
+Route::get('/常見QA', function () {
+    return view('QA');
+})->name('QA');
+
+Route::get('/教師資歷', function () {
+    return view('teacher_experience');
+})->name('teacher_experience');
+
+Route::get('/報名流程', function () {
+    return view('registration_process');
+})->name('registration_process');
 
 // Route::get('/註冊帳號_登入', function () {
 //     return view('login');
@@ -232,8 +309,3 @@ Route::get('/學員感言', function () {
 })->name('st_comment');
 
 Route::get('/註冊', [ManagerController::class, 'outsideregisterStudentView'])->name('outsideregisterStudentView');
-
-
-
-
-

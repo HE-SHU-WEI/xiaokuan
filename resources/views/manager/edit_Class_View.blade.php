@@ -32,6 +32,7 @@
 <body>
 @extends('layouts.app')
 @section('content')
+<<<<<<< HEAD
     <div id="app">
     <div class="main-wrapper main-wrapper-1">
       <div class="navbar-bg"></div>
@@ -62,6 +63,22 @@
                 <button type="submit" class=" dropdown-item  btn btn-danger">登出</button>
       
               </form>
+=======
+    <div class="container">
+        <h2>編輯課程</h2>
+        <form method="POST" action="{{ route('updateClass', ['id' => $class->id]) }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label for="classname">課程名稱</label>
+                <input type="text" class="form-control" id="classname" name="classname" value="{{ $class->classname }}" >
+            </div>
+
+            <div class="form-group">
+                <label for="classtype">課程種類</label>
+                <input type="text" class="form-control" id="classtype" name="classtype" value="{{ $class->classtype }}" >
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
             </div>
           </li>
         
@@ -104,6 +121,7 @@
               </ul>
             </li>
 
+<<<<<<< HEAD
                    
             <li class="menu-header">管理員</li>
             <li class="dropdown">
@@ -125,6 +143,16 @@
           <div class="section-header">
             <div class="section-header-back">
               <a href="{{ route('coursesView') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+=======
+            <div class="form-group">
+                <label for="link">課程連結</label>
+                <input type="text" class="form-control" id="link" name="link" value="{{ $class->link }}" >
+            </div>
+
+            <div class="form-group">
+                <label for="videotime">課程時長</label>
+                <input type="text" class="form-control" id="videotime" name="videotime" value="{{ $class->videotime }}" >
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
             </div>
             <h1>更新課程</h1>
 
@@ -188,6 +216,7 @@
 
 
 
+<<<<<<< HEAD
 					  <!-- For Who 這是我寫的版本感覺有點不同-->
                  <div class="form-group row mb-4">
                      <label for="forwho" class="col-form-label text-md-right col-12 col-md-3 col-lg-3">對象:</label>
@@ -197,6 +226,12 @@
 						 </div>
                    </div>
 
+=======
+            <div class="form-group">
+                <label for="forwho">使用對象</label>
+                <textarea class="form-control" id="forwho" name="forwho" rows="4" >{{ $class->forwho }}</textarea>
+            </div>
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 
 
                    <div class="form-group row mb-4">
@@ -209,6 +244,7 @@
                </div>
               </div>
 
+<<<<<<< HEAD
 					  <!-- Money -->
                    <div class="form-group row mb-4">
                      <label for="money" class="col-form-label text-md-right col-12 col-md-3 col-lg-3">價格:</label>
@@ -239,6 +275,27 @@
                 <textarea class="form-control" id="drive" name="drive" rows="4" >{{ $class->drive }}</textarea>
                 </div> 
             </div>  
+=======
+            <div class="form-group">
+                <label for="money">價格</label>
+                <input type="text" class="form-control" id="money" name="money" value="{{ $class->money }}" >
+            </div>
+
+            <div class="form-group">
+                <label for="discountlink">折扣出售</label>
+                <textarea class="form-control" id="discountlink" name="discountlink" rows="4" >{{ $class->discountlink }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="drive">雲端連結</label>
+                <textarea class="form-control" id="drive" name="drive" rows="4" >{{ $class->drive }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="classnum">課程包含數量</label>
+                <textarea class="form-control" id="classnum" name="classnum" rows="4" >{{ $class->classnum }}</textarea>
+            </div>
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 
                    <div class="form-group row mb-4">
                       <label  class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>

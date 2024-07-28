@@ -320,6 +320,23 @@ public function showProfile()
 }
 
 
+    //列出學生資訊
+    public function showProfile()
+    {
+        // 獲取 session 中的 remembered_account
+        $studentAccount = Session::get('remembered_account');
+
+        // 從資料表中檢索對應的學生資料
+        $student = StuList::where('account', $studentAccount)->first();
+
+        // 如果找不到對應的學生，處理相應的錯誤
+        if (!$student) {
+            return redirect()->back()->with('error', '找不到對應的學生資料');
+        }
+
+        // 返回視圖並傳遞學生資料
+        return view('student.profile', compact('student'));
+    }
 
 
 

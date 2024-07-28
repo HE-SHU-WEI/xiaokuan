@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>小寬數學_重設密碼</title>
 </head>
 <body>
@@ -24,5 +25,24 @@
 
     <p>感謝您對我們的信任。如有任何疑問或需要進一步協助，請隨時聯繫我們的小編。</p>
     <p>莊小寬數學團隊</p>
+=======
+    <title>Password Reset</title>
+</head>
+<body>
+    <p>Hello,</p>
+
+    <p>You are receiving this email because we received a password reset request for your account.</p>
+
+    <p>
+        Please click the following link to reset your password:
+        <a href="{{ $resetLink }}">{{ $resetLink }}</a>
+    </p>
+
+    <p>If you did not request a password reset, no further action is required.</p>
+
+    <p>Thank you.</p>
+    <img src="{{ asset('C:\Users\User\Downloads\angle.jpg') }}" alt="Your Image" style="max-width: 100%; height: auto;">
+
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 </body>
 </html>

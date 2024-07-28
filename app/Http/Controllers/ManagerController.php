@@ -154,8 +154,14 @@ class ManagerController extends Controller
     {
 
         $request->validate([
+<<<<<<< HEAD
             'name' => 'nullable|string',
             'account' => 'nullable|string',
+=======
+            'name' => 'required|string',
+            'account' => 'required|string',
+            'password' => 'required|string',
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
             'photo' => 'nullable|image',
@@ -168,6 +174,7 @@ class ManagerController extends Controller
         // 更新紀錄
         $teacher->name = $request->name;
         $teacher->account = $request->account;
+        $teacher->password = $request->password;
         $teacher->introduction = $request->introduction;
         $teacher->background = $request->background;
 

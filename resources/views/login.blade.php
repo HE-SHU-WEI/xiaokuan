@@ -82,6 +82,14 @@
                 </ul>
 
 
+<<<<<<< HEAD
+=======
+<a href="{{ route('password.request') }}">忘記密碼？</a>
+
+@if(session('error'))
+    <div>{{ session('error') }}</div>
+@endif
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
 
 
             </nav>

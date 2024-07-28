@@ -32,6 +32,7 @@ class PurchaseConfirmation extends Mailable
     {
         return $this->view('emails.purchase_confirmation')
                     ->subject('莊小寬數學購課繳費')
+<<<<<<< HEAD
                     ->attach(public_path('storage\photos\bank.png'), [
                         'as' => 'bank.png',
                         'mime' => 'image/jpeg',
@@ -40,5 +41,12 @@ class PurchaseConfirmation extends Mailable
                         'as' => 'gmail_line.png',
                         'mime' => 'image/jpeg',
                     ]);
+=======
+                    ->attach(public_path('storage\photos\payment.jpg'), [
+                        'as' => 'payment.jpg',
+                        'mime' => 'image/jpeg',
+                    ]);
+
+>>>>>>> 0d9ae4934db44b1386542bfdd8de1ff952718947
     }
 }
