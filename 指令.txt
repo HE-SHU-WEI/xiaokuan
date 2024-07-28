@@ -1,0 +1,11 @@
+net stop was /y
+net stop w3svc
+
+net start was
+net start w3svc
+
+
+sc config http start= disabled
+net stop http
+
+iisreset
