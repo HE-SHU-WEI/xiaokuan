@@ -8,6 +8,7 @@ use App\Models\Userlist;
 use App\Models\Stulist;
 use App\Models\Managerlist;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 
 class LoginController extends Controller
 {
@@ -86,4 +87,65 @@ class LoginController extends Controller
     // 重定向到 login.blade.php
     return redirect(route('login.form'));
 }
+
+
+//---------------------------
+//忘記密碼
+// 顯示忘記密碼表單
+// public function showLinkRequestForm()
+// {
+//     return view('forget_password');
+// }
+
+// // 處理忘記密碼請求
+// public function sendPassword(Request $request)
+//     {
+//         $request->validate([
+//             'student_id' => 'required',
+//             'email' => 'required|email'
+//         ]);
+
+//         // 查找 stulist 数据表中是否有匹配的记录
+//         $student = StuList::where('account', $request->student_id)
+//                           ->where('gmail', $request->email)
+//                           ->first();
+
+//         if ($student) {
+//             // 找紀錄，發密碼
+//             $password = $student->password;
+//             $email = $student->gmail;
+
+//             // 送出郵件
+//             Mail::raw("您的密碼是: $password", function($message) use ($email) {
+//                 $message->to($email)
+//                         ->subject('您的帳號密碼');
+//             });
+
+//             return back()->with('status', '密碼已發送到您的 Gmail');
+//         } else {
+//             // 没有找到匹配的记录
+//             return back()->withErrors(['student_id' => '學號或 Gmail 不正確']);
+//         }
+//     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
