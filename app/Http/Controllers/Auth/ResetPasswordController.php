@@ -24,20 +24,20 @@ class ResetPasswordController extends Controller
         'password' => 'required|confirmed',
     ]);
 
-    // 查询用户
+
     $user = Stulist::where('account', $request->account)->first();
 
-    // 检查用户是否存在
+    // 檢查是否有這個學生
     if (!$user) {
         return back()->withErrors(['account' => '學號錯誤。']);
     }
 
-    // 执行密码重置操作
+
     $status = Password::broker('stulist')->reset(
         $request->only('account', 'password', 'password_confirmation', 'token'),
         function ($user, $password) {
 
-            // 更新密码
+            // 更新密碼
             $user->forceFill([
                 'password' => $password,
             ])->save();

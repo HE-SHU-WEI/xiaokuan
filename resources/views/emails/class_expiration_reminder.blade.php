@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Class Expiration Reminder</title>
+    <title>小寬數學課程到期提醒</title>
 </head>
 <body>
-    <h2>Class Expiration Reminder</h2>
-    <p>This is a reminder that your class "{{ $classname }}" will expire in 10 days. Please take necessary actions.</p>
+    <h2>小寬數學課程到期提醒</h2>
+    <p>謹此提醒您，您的課程 "{{ $classname }}" 將在 10 天後過期。若您還要繼續延長課程，請與專人聯絡。</p>
+
 </body>
 </html>

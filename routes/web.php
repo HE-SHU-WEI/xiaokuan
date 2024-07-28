@@ -13,16 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 /*main*/
 
 use App\Http\Controllers\MainController;
 
-Route::get('/main', [MainController::class, 'index'])->name('main.index');
+// Route::get('/main', [MainController::class, 'index'])->name('main.index');
 
 
 
@@ -124,15 +124,15 @@ Route::post('/purchase', [StudentController::class,'purchase'])->name('purchase'
 Route::post('/update-watchtime', [StudentController::class, 'updateWatchTime'])->name('update.watchtime');
 
 Route::post('/progress', [StudentController::class, 'progress'])->name('progress');
-
+Route::get('/profile', [StudentController::class, 'showProfile'])->name('student.profile');
 
 
 /*login*/
 
 use App\Http\Controllers\LoginController;
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/註冊帳號_登入', [LoginController::class, 'showLoginForm'])->name('login.form');
+Route::post('/註冊帳號_登入', [LoginController::class, 'login'])->name('login');
 // Route::get('forgot-password', [LoginController::class, 'showLinkRequestForm'])->name('password.request');
 // Route::post('forgot-password', [LoginController::class, 'sendPassword'])->name('password.email');
 
@@ -179,45 +179,57 @@ Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('
 
 
 
-// Route::get('/首頁_莊小寬數學', function () {
-//    return view('index');
-// })->name('index');
+Route::get('/', function () {
+   return view('index');
+})->name('index');
 
-// Route::get('/免費試聽', function () {
-//     return view('free_class');
-// })->name('free_class');
 
-// Route::get('/常見QA', function () {
-//     return view('QA');
-// })->name('QA');
 
-// Route::get('/教師資歷', function () {
-//     return view('teacher_experience');
-// })->name('teacher_experience');
 
-// Route::get('/報名流程', function () {
-//     return view('registration_process');
-// })->name('registration_process');
+Route::get('/服務條款', function () {
+    return view('Terms_of_Service');
+ })->name('Terms_of_Service');
+
+ Route::get('/註冊條款', function () {
+    return view('Registration_Terms');
+ })->name('Registration_Terms');
+
+
+Route::get('/免費試聽', function () {
+    return view('free_class');
+})->name('free_class');
+
+Route::get('/常見QA', function () {
+    return view('QA');
+})->name('QA');
+
+Route::get('/教師資歷', function () {
+    return view('teacher_experience');
+})->name('teacher_experience');
+
+Route::get('/報名流程', function () {
+    return view('registration_process');
+})->name('registration_process');
 
 // Route::get('/註冊帳號_登入', function () {
 //     return view('login');
 // })->name('login');
 
-// Route::get('/註冊帳號_註冊', function () {
-//     return view('register');
-// })->name('register');
+Route::get('/註冊帳號_註冊', function () {
+    return view('register');
+})->name('register');
 
-// Route::get('/課程頁1', function () {
-//     return view('class');
-// })->name('class');
+Route::get('/課程頁1', function () {
+    return view('class');
+})->name('class');
 
-// Route::get('/課程特色', function () {
-//     return view('features');
-// })->name('features');
+Route::get('/課程特色', function () {
+    return view('features');
+})->name('features');
 
-// Route::get('/學員感言', function () {
-//     return view('st_comment');
-// })->name('st_comment');
+Route::get('/學員感言', function () {
+    return view('st_comment');
+})->name('st_comment');
 
 Route::get('/註冊', [ManagerController::class, 'outsideregisterStudentView'])->name('outsideregisterStudentView');
 

@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Mori";
+  font-weight: 300;
+  height: 100vh;
+  overflow: hidden;
+	background:linear-gradient(90deg, #b2b1b0, #848891)
+}
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.container.grid, .container.columns {
+  align-content: stretch;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.letter {
+  text-align: center;
+  color: black;
+  font-size: 10vmax;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+}
+.container.grid .letter {
+  flex-basis: 50%;
+}
+.container.columns .letter {
+  flex-basis: 25%;
+}
+.for, .gsap {
+  font-size: 5vmax;
+  color: var(--color-surface-white);
+}
+.for {
+  padding: 2px 1.6vmax;
+  font-weight: 300;
+  display: none;
+}
+.gsap {
+  padding: 2px 0;
+  font-weight: 600;
+  display: none;
+}
+.container.final .for, .container.final .gsap {
+  display: block;
+}
+.F {
+background:linear-gradient(-45deg, #dcdcdd, #848891);
+
+}
+.l {
+  background:linear-gradient(-45deg, #b2b1b0, #848891);
+}
+.i {
+  background:linear-gradient(-45deg, #dcdcdd, #848891);
+}
+.p {
+  background:linear-gradient(-45deg, #b2b1b0, #848891);
+}
+.container.plain .letter {
+  background: transparent;
+  color: var(--color-surface-white);
+  padding: 0;
+}
+
+.logo {
+  position: fixed;
+  width: 100px;
+  bottom: 20px;
+  right: 30px;
+}

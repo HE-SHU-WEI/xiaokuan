@@ -1,0 +1,92 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400&display=swap");
+:root {
+  --x: 50%;
+  --y: 50%;
+  --blur: 0.7vmax;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  
+ 
+}
+body {
+ 
+  
+}
+main {
+  z-index: 1;
+}
+h1 {
+ 
+}
+#bg,
+#bg_mask {
+  /* ふちボケ対策 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: calc(var(--blur) * -1);
+
+  background: url("/photos/teacher/course_logo.png") no-repeat center/cover;
+}
+#bg {
+  filter: blur(var(--blur));
+}
+#bg_mask {
+  mask-image: radial-gradient(
+    circle 30vmin at var(--x) var(--y),
+    black 20vmin,
+    transparent
+  );
+}
+h2{
+	text-align: center;
+	font-size: 36px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 20px 0;
+  line-height: 44px;
+}
+h3{
+	text-align: center;
+	font-size: 30px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 20px 0;
+  line-height: 44px;
+}
+h4{
+	text-align: left;
+	font-size: 25px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 20px 0;
+  line-height: 44px;
+}
+h4-1{
+	text-align: center;
+	font-size: 25px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 20px 0;
+  line-height: 44px;
+	color: #ac5c33
+}
+h5{
+	text-align: left;
+	font-size: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 20px 0;
+  line-height: 44px;
+}

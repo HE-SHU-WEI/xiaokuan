@@ -30,6 +30,15 @@ class PurchaseConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.purchase_confirmation');
+        return $this->view('emails.purchase_confirmation')
+                    ->subject('莊小寬數學購課繳費')
+                    ->attach(public_path('storage\photos\bank.png'), [
+                        'as' => 'bank.png',
+                        'mime' => 'image/jpeg',
+                    ])
+                    ->attach(public_path('storage\photos\gmail_line.png'), [
+                        'as' => 'gmail_line.png',
+                        'mime' => 'image/jpeg',
+                    ]);
     }
 }

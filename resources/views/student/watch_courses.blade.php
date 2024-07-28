@@ -1,64 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>後台_課程總攬</title>
+
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="/assets/modules/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/modules/fontawesome/css/all.min.css">
+
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href="/assets/modules/datatables/datatables.min.css">
+  <link rel="stylesheet" href="/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+  
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <!-- Start GA -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-94034622-3');
+  </script>
+  <!-- /END GA -->
+</head>
+
+<body>
 @extends('layouts.app')
 
 @section('content')
-    <h2>課程列表</h2>
+ <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          </ul>
+        </form>
+        <li class="dropdown">
+          <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+            
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="{{ route('student.profile') }}" class="dropdown-item has-icon">
+              <i class="far fa-user"></i> 個人資料
+            </a>
+            
+            <div class="dropdown-divider"></div>
+              <form method="post" action="{{ route('logout') }}">
+                @csrf
+              <!-- <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> 登出 -->
+               
+                <button type="submit" class=" dropdown-item  btn btn-danger">登出</button>
+      
+              </form>
+          </div>
+        </li>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="{{ route('student.index') }}">主頁</a>
+          </div>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="{{ route('student.index') }}">主頁</a>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="menu-header">購買課程</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>購買課程</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{ route('class.index') }}">去購買課程</a></li>
+                <li><a class="nav-link" href="{{ route('cart.show') }}">查看購物車</a></li>
+              </ul>
+            </li>
+            <li class="menu-header">課程</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th-large"></i> <span>課程</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{{ route('watch.courses') }}">課程總攬</a></li>
+              </ul>
+            </li>
+            <li class="menu-header">學員</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>個人檔案</span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ route('student.profile') }}">個人資料</a></li>
+              </ul>
+            </li>
+          </ul>
+        </aside>
+      </div>
 
-    @if(count($watchCourses) > 0)
-        <table class="table">
-            <tbody>
-                @php
-                    // 将课程按照前缀分组
-                    $groupedCourses = [];
-                    foreach ($courseDetails as $course) {
-                        $prefix = strtok($course['classname'], '_');
-                        if (strpos($course['classname'], '_') !== false && !isset($groupedCourses[$prefix])) {
-                            $groupedCourses[$prefix] = [];
-                        }
-                        if (strpos($course['classname'], '_') !== false) {
-                            $groupedCourses[$prefix][] = $course;
-                        }
-                    }
-                @endphp
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>課程總攬</h1>
+          </div>
+          <div class="section-body">
+            <h2 class="section-title">所有課程</h2>
+            <div class="row">
+              <div class="col-12">
+                @if(count($watchCourses) > 0)
+                <div class="card">
+                  <div class="card-header">
+                    <h4>詳細資料</h4>
+                  </div>
+<!-- 在 controller 中传递给视图的数据 -->
+@php
+    $groupedCourses = [];
+    foreach ($courseDetails as $course) {
+        $prefix = strtok($course['classname'], '_');
+        if (strpos($course['classname'], '_') !== false) {
+            $groupedCourses[$prefix][] = $course;
+        }
+    }
+@endphp
 
-                @foreach($groupedCourses as $prefix => $courses)
-                    {{-- 显示课程名称及前缀 --}}
-                    <tr>
-                        <td colspan="2">
-                            <h3>{{ $prefix }}</h3>
-                        </td>
-                    </tr>
-
-                    {{-- 显示课程列表 --}}
-                    @foreach($courses as $index => $course)
-                        <tr>
-                            <td>
-                                <div>
-                                    <a href="{{ route('watch.video', ['classname' => $course['classname']]) }}" target="_self">
-                                        <img src="{{ asset('storage/' . $course['photo']) }}" style="max-width: 100px;">
-                                    </a>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <a href="{{ route('watch.video', ['classname' => $course['classname']]) }}" target="_self">
-                                        {{ $course['classname'] }}
-                                    </a>
-                                    <!-- 显示观看进度和时间信息 -->
-                                    <div class="progress">
-                                        <p>課程進度：{{ $course['progressPercentage'] ?? '0' }}%</p>
-                                    </div>
-                                    {{-- <p>目前觀看時間：{{ $course['watchtime'] ?? '00:00:00' }}</p>
-                                    <p>課程總時長：{{ $course['videotime'] ?? '00:00:00' }}</p> --}}
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>您沒有購買任何課程</p>
-    @endif
-
-    <a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前頁</a>
+<div class="card-body">
+    @foreach($groupedCourses as $prefix => $courses)
+    <div class="accordion" id="accordionCourses">
+        <div class="card">
+            <div class="card-header" id="heading{{ $prefix }}">
+                <h3 class="mb-0">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{ $prefix }}" aria-expanded="true" aria-controls="collapse{{ $prefix }}">
+                        {{ $prefix }}
+                    </button>
+                </h3>
+            </div>
+            <div id="collapse{{ $prefix }}" class="collapse" aria-labelledby="heading{{ $prefix }}" data-parent="#accordionCourses">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>課程名稱</th>
+                                    <th>進度</th>
+                                    <th>目前觀看時間</th>
+                                    <th>總時長</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($courses as $course)
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('watch.video', ['classname' => $course['classname']]) }}" target="_self">
+                                            {{ $course['classname'] }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $course['progressPercentage'] ?? '0' }}%</td>
+                                    <td>{{ $course['watchtime'] ?? '00:00:00' }}</td>
+                                    <td>{{ $course['videotime'] ?? '00:00:00' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+                </div>
+                @else
+                <p>您沒有購買任何課程</p>
+                @endif
+                <td><a href="{{ route('student.index') }}" id="backButton" class="btn btn-primary">回前頁</a></td>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 @endsection
+
+  <!-- General JS Scripts -->
+  <script src="/assets/modules/jquery.min.js"></script>
+  <script src="/assets/modules/popper.js"></script>
+  <script src="/assets/modules/tooltip.js"></script>
+  <script src="/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+  <script src="/assets/modules/moment.min.js"></script>
+  <script src="/assets/js/stisla.js"></script>
+
+  <!-- JS Libraies -->
+  <script src="/assets/modules/datatables/datatables.min.js"></script>
+  <script src="/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
+  <script src="/assets/modules/jquery-ui/jquery-ui.min.js"></script>
+
+  <!-- Page Specific JS File -->
+  <script src="/assets/js/page/modules-datatables.js"></script>
+  
+  <!-- Template JS File -->
+  <script src="/assets/js/scripts.js"></script>
+  <script src="/assets/js/custom.js"></script>
+</body>
+</html>

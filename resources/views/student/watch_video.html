@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>後台_觀看課程</title>
+
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="/assets/modules/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
+
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href="/assets/modules/datatables/datatables.min.css">
+  <link rel="stylesheet" href="/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+	
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+<!-- Start GA -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-94034622-3');
+</script>
+<!-- /END GA --></head>
+
+<body>
+  @extends('layouts.app')
+
+@section('content')
+ <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          </ul>
+
+        </form>
+ 
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+            <div class="d-sm-none d-lg-inline-block">莊小寬</div></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              
+              <a href="manager.html" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> 個人資料
+              </a>
+  
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> 登出
+              </a>
+            </div>
+          </li>
+        
+      </nav>
+  <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="course_management.html">菜單</a>
+          </div>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="course_management.html">菜單</a>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="menu-header">購買課程</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>購買課程</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="new_course.html">去購買課程</a></li>
+                <li><a class="nav-link" href="course_management.html">查看購物車</a></li>
+              </ul>
+            </li>
+            <li class="menu-header">課程</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th-large"></i> <span>課程</span></a>
+              <ul class="dropdown-menu">
+				<li><a class="nav-link" href="watch_courses.html">課程總攬</a></li>
+                <li><a class="nav-link" href="watch_video.html">觀看課程</a></li>
+      
+              </ul>
+            </li>
+           
+
+
+                   
+            <li class="menu-header">學員</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>個人檔案</span></a>
+              <ul class="dropdown-menu">
+                <li><a href="後台_學員檔案.html">個人資料</a></li> 
+            
+              </ul>
+            </li>
+                
+          </ul>
+
+       </aside>
+      </div>
+
+		
+		<!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>觀看課程</h1>
+
+          </div>
+  <div class="main-sidebar sidebar-style-2">
+        <aside >
+          <ul class="sidebar-menu">
+            <li class="menu-header">課程小節</li>
+            <li class="dropdown">
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i><span>課程小節</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="new_course.html">1</a></li>
+                <li><a class="nav-link" href="course_management.html">2</a></li>
+              </ul>
+            </li>
+          </ul>
+
+       </aside>
+      </div>
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive">
+						<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/659564183?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="整數3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- General JS Scripts -->
+  <script src="/assets/modules/jquery.min.js"></script>
+  <script src="/assets/modules/popper.js"></script>
+  <script src="/assets/modules/tooltip.js"></script>
+  <script src="/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+  <script src="/assets/modules/moment.min.js"></script>
+  <script src="/assets/js/stisla.js"></script>
+  <!-- JS Libraies -->
+  <script src="/assets/modules/datatables/datatables.min.js"></script>
+  <script src="/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
+  <script src="/assets/modules/jquery-ui/jquery-ui.min.js"></script>
+
+  <!-- Page Specific JS File -->
+  <script src="/assets/js/page/modules-datatables.js"></script>
+  
+  <!-- Template JS File -->
+  <script src="/assets/js/scripts.js"></script>
+  <script src="/assets/js/custom.js"></script>
+</body>
+</html>
+

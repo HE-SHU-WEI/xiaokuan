@@ -49,13 +49,13 @@ class ManagerController extends Controller
         // dd($request);
         // 驗證請求的資料
         $validatedData = $request->validate([
-            'name' => 'required|string',
-            'account' => 'required|string',
-            'password' => 'required|string',
+            'name' => 'nullable|string',
+            'account' => 'nullable|string',
+            'password' => 'nullable|string',
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
             'photo' => 'nullable|image|',
-            'entry' => 'required|date',
+            'entry' => 'nullable|date',
         ]);
 
 
@@ -154,8 +154,8 @@ class ManagerController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|string',
-            'account' => 'required|string|unique:userlist,account,' . $teacherId,
+            'name' => 'nullable|string',
+            'account' => 'nullable|string',
             'introduction' => 'nullable|string',
             'background' => 'nullable|string',
             'photo' => 'nullable|image',
@@ -184,7 +184,7 @@ class ManagerController extends Controller
         $teacher->entry = $request->entry;
         $teacher->save();
 
-        return redirect()->route('editTeacherView')->with('success', '老師資料已更新');
+        return redirect()->route('manager.editTeacherView')->with('success', '老師資料已更新');
     }
 
     public function deleteTeacher($teacherId)
@@ -364,14 +364,14 @@ protected function createStudentCourseTable($account)
 
     // Validate the request data
     $validatedData = $request->validate([
-        'classtype' => 'required|string',
-        'link' => 'required|url',
-        'videotime' => 'required|string',
+        'classtype' => 'nullable|string',
+        'link' => 'nullable|url',
+        'videotime' => 'nullable|string',
         'introduction' => 'nullable|image',
         'photo' => 'nullable|image',
-        'forwho' => 'required|string',
-        'money' => 'required|numeric',
-        'classname' => 'required|string',
+        'forwho' => 'nullable|string',
+        'money' => 'nullable|numeric',
+        'classname' => 'nullable|string',
         'discountlink' => 'nullable|string',
         'drive' => 'nullable|string',
         'classnum' => 'nullable|int',
@@ -380,15 +380,15 @@ protected function createStudentCourseTable($account)
     ]);
 
     // Update class data
-    $class->classtype = $validatedData['classtype'];
-    $class->link = $validatedData['link'];
-    $class->videotime = $validatedData['videotime'];
-    $class->classname = $validatedData['classname'];
-    $class->forwho = $validatedData['forwho'];
-    $class->money = $validatedData['money'];
-    $class->discountlink = $validatedData['discountlink'];
-    $class->drive = $validatedData['drive'];
-    $class->classnum = $validatedData['classnum'];
+    $class->classtype = $validatedData['classtype'] ?? $class->classtype;
+    $class->link = $validatedData['link'] ?? $class->link;
+    $class->videotime = $validatedData['videotime'] ?? $class->videotime;
+    $class->classname = $validatedData['classname'] ?? $class->classname;
+    $class->forwho = $validatedData['forwho'] ?? $class->forwho;
+    $class->money = $validatedData['money'] ?? $class->money;
+    $class->discountlink = $validatedData['discountlink'] ?? $class->discountlink;
+    $class->drive = $validatedData['drive'] ?? $class->drive;
+    $class->classnum = $validatedData['classnum'] ?? $class->classnum;
 
     // Handle photo upload
     if ($request->hasFile('photo')) {
@@ -555,7 +555,7 @@ public function storeStudentPurchase(Request $request)
                     'classend' => $request->class_expire_date,
                     'videotime' => $videotime,
                 ]);
-                dd($studentTableName);
+                // dd($studentTableName);
             }
         }
     } else {
@@ -593,7 +593,7 @@ public function storeStudentPurchase(Request $request)
 public function showStudents()
 {
     $students = Stulist::all(); // 获取所有学生数据
-    return view('manager.show_students', compact('students'));
+    return view('manager.show_Students', compact('students'));
 }
 
 // public function exportStudents()
@@ -606,12 +606,21 @@ public function deleteStudent($id)
         // 找到要刪除的學生
         $student = Stulist::find($id);
 
+
         if (!$student) {
             return redirect()->back()->with('error', '找不到要刪除的學生');
         }
 
+        $tableName = $student->account;
+        // dd($tableName);
+
         // 刪除學生
         $student->delete();
+
+        // 檢查並刪除對應的資料表
+        if (Schema::hasTable($tableName)) {
+            Schema::drop($tableName);
+        }
 
         return redirect()->back()->with('success', '學生刪除成功');
     }
